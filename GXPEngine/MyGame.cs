@@ -19,7 +19,7 @@ public class MyGame : Game {
 		AddChild(canvas);
 		Console.WriteLine("MyGame initialized");
 	}
-
+	
 	// For every game object, Update is called every frame, by the engine:
 	void Update() {
 		// Empty
