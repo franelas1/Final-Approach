@@ -14,7 +14,7 @@ public class MyGame : Game {
 		canvas.TextSize(32);
 		canvas.TextAlign(CenterMode.Center, CenterMode.Center);
 		canvas.Text("Welcome!", width / 2, height / 2);
-
+		
 		// Add the canvas to the engine to display it:
 		AddChild(canvas);
 		Console.WriteLine("MyGame initialized");
