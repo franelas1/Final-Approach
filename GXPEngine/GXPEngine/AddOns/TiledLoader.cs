@@ -448,7 +448,7 @@ namespace TiledMapParser {
 				}
 			}
 		}
-
+		
 		void LoadImageLayer(int index) {
 			if (map.ImageLayers.Length<=index) return;
 			ImageLayer layer = map.ImageLayers[index];
