@@ -8,16 +8,30 @@ using GXPEngine;
 
 public class Player : RigidBody
 {
-    private float maxSpeed = 3;
+    
+    private float jumpForce = 6f;
     
     public Player(string filename, int cols, int rows, Vec2 pos, bool moving, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, keepInCache, addCollider)
     {
         bounciness = 0;
+        isPlayer = true;
     }
 
     public void Update()
     {
         base.Update();
+
+        /*
+        if (Input.GetKey(Key.LEFT))
+        {
+           velocity.SetXY(maxSpeed, velocity.y);
+        }
+        else if (Input.GetKey(Key.RIGHT))
+        {
+            velocity.SetXY(maxSpeed, velocity.y);
+        }
+        */
+
         
         if (Input.GetKey(Key.LEFT))
         {
@@ -31,17 +45,19 @@ public class Player : RigidBody
         {
             acceleration.x = 0;
         }
+
+        if (Input.GetKeyDown(Key.SPACE) && grounded && tempY+5 > position.y && tempY-5 < position.y) { velocity.SetXY(velocity.x, -jumpForce); grounded = false; }
+
+
+        if (y > myGame.water.y) Death();
         
-        if (velocity.x >= maxSpeed)
-        {
-            
-            velocity.x = maxSpeed;
-        }
-        if (velocity.x <= -maxSpeed)
-        {
-            velocity.x = -maxSpeed;
-        }
-        Console.WriteLine(acceleration.ToString());
+
+    }
+
+    public void Death()
+    {
+        myGame.rigidBodies.Remove(this);
+        LateDestroy();
     }
 
 }
