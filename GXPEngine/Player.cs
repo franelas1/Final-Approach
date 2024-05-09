@@ -49,7 +49,7 @@ public class Player : RigidBody
         if (Input.GetKeyDown(Key.SPACE) && grounded && tempY+5 > position.y && tempY-5 < position.y) { velocity.SetXY(velocity.x, -jumpForce); grounded = false; }
 
 
-        if (y > myGame.water.y) Death();
+        //if (y > myGame.water.y) Death();
         
 
     }

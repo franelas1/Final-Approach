@@ -23,6 +23,7 @@ public class RigidBody : AnimationSprite
     public bool moving;
     float t;
     public float tempY;
+    public RigidBody bcb;
     public bool isPlayer;
     public bool isPushable = false;
     public bool grounded;
@@ -47,7 +48,7 @@ public class RigidBody : AnimationSprite
 
     public void Update() 
     {
-        acceleration.y = gravity;
+        
         //Follow Mouse
         if (followMouse)
         {
@@ -56,17 +57,21 @@ public class RigidBody : AnimationSprite
         }
         //
 
-        if ((onBox || y >= myGame.water.y) && moving)
-        {
-            acceleration.SetXY(acceleration.x, 0);
-            if (onBox) velocity.y = -1f;
-            else if (velocity.y > 0.1) { acceleration.SetXY(acceleration.x, velocity.y * -0.1f); }
-            else if (y - myGame.water.y > -5) { acceleration.SetXY(acceleration.x, -0.05f); }
-            
-        }
+        
         
         if (moving)
         {
+            
+            acceleration.y = gravity;
+            if ((onBox || y >= myGame.water.y))
+            {
+                acceleration.SetXY(acceleration.x, 0);
+                if (onBox) velocity.y = -1f;
+                else if (velocity.y > 0.1) { acceleration.SetXY(acceleration.x, velocity.y * -0.1f); }
+                else if (y - myGame.water.y > -5) { acceleration.SetXY(acceleration.x, -0.05f); }
+
+            }
+
             if (acceleration.x == 0)
             {
                 acceleration.x = -velocity.x / 30;
@@ -81,20 +86,21 @@ public class RigidBody : AnimationSprite
                 velocity.x = -maxSpeed;
             }
             //Euler Integration
-            if (!CheckCollisions())
-            {
-                velocity += acceleration;
-                position += velocity;
-            }
+            
             
         }
+        if (!CheckCollisions())
+        {
+            velocity += acceleration;
+            position += velocity;
+        }
         SetXY(position.x, position.y);
+        acceleration.x = 0;
 
-
-        top = y - height / 2;
-        bottom = y + height / 2;
-        left = x - width / 2;
-        right = x + width / 2;
+        top = position.y - height / 2;
+        bottom = position.y + height / 2;
+        left = position.x - width / 2;
+        right = position.x + width / 2;
     }
 
     /*public void SolveIntersections()
@@ -147,8 +153,8 @@ public class RigidBody : AnimationSprite
 
         foreach (RigidBody other in myGame.rigidBodies)
         {
-            if (other == this) continue;
-
+            if (other == this || (!other.moving && !moving)) continue;
+            
             if (other.top < sim.y + (height / 2) && other.left < right && other.right > left && other.bottom > top)
             {
 
@@ -156,8 +162,18 @@ public class RigidBody : AnimationSprite
                 
 
                 grounded = true;
+                if(isPlayer)
                 tempY = position.y;
-                velocity.y = -velocity.y * bounciness;
+
+
+
+                if (other.isPushable)
+                {
+                    bcb = other;
+                    velocity.y = 0;
+                }
+                else
+                    velocity.y = -velocity.y * bounciness;
                 bc = true;
                 collided = true;
 
@@ -171,7 +187,8 @@ public class RigidBody : AnimationSprite
                     t = Mathf.Abs(position.y - sim.y) / Mathf.Abs(position.y - other.bottom);
                 }
                 
-                velocity.y = -velocity.y * bounciness;
+                    velocity.y = -velocity.y * bounciness;
+                
                 tc = true;
                 collided = true;
 
@@ -219,16 +236,16 @@ public class RigidBody : AnimationSprite
                 
             }
 
-
+            
             if (other.isPushable && (left - 3 <= other.right && right > other.right) &&
                 ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
                && (isPlayer) && Input.GetKey(Key.LEFT)) other.acceleration.x = acceleration.x;
             else if (other.isPushable && (right + 3 >= other.left && left < other.left) &&
                 ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
                && (isPlayer) && Input.GetKey(Key.RIGHT)) other.acceleration.x = acceleration.x;
-            else if (!other.isPlayer) {  other.acceleration.x = 0; }
+            
 
-            if (other.isPushable && other.y >= myGame.water.y && bc) { Console.WriteLine(acceleration); onBox = true; position.y = other.top - (height / 2); }
+            if (other.isPushable && other.bottom >= myGame.water.y && ((other.left < left && other.right > left) || (other.right > right && other.left < right)) && (bottom - 4 < other.top && bottom + 4 > other.top) && isPlayer && bc && bcb == other) { onBox = true; position.y = other.top - (height / 2); }
 
         }
         
