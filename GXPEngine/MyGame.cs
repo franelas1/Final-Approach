@@ -7,22 +7,44 @@ using TiledMapParser;                           // System.Drawing contains drawi
 public class MyGame : Game {
 
 	public List<RigidBody> rigidBodies = new List<RigidBody>();
-
+    public int currentLevel;
     float waterSpeed = 0.33f;
 	public AnimationSprite water;
     public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
-        LoadDemo();
+        LoadLevel1();
 		
     }
 	// For every game object, Update is called every frame, by the engine:
 	void Update() 
 	{
 		WaterControls();
+        if (Input.GetKey(Key.ZERO)) { Reload(); currentLevel = 0; }
+        if (Input.GetKey(Key.ONE)) { Reload(); currentLevel = 1; }
     }
 
+    void Reload() 
+    {
+        rigidBodies.Clear();
+       foreach (GameObject o in GetChildren())
+        {
+            o.LateDestroy();
+        }
+
+       switch (currentLevel) 
+        {
+            case 0:
+                LoadDemo(); break;
+                case 1:
+                LoadLevel1(); break;
+            default:
+                break;
+        }
+    }
     void LoadLevel1()
     {
+        currentLevel = 1;
+
         Sprite blank = new Sprite("square.png");
         AddChild(blank);
         blank.alpha = 0f;
@@ -232,6 +254,7 @@ public class MyGame : Game {
     }
     void LoadDemo()
     {
+        currentLevel = 0;
         RigidBody ball1 = new RigidBody("square.png", 1, 1, new Vec2(300, 350), true);
         AddChild(ball1);
         rigidBodies.Add(ball1);
