@@ -34,7 +34,7 @@ public class Button : AnimationSprite
         {
             if (((other.left < left && other.right > left) || (other.right > right && other.left < right) || (other.left > left && other.right < right)) 
                 && ((other.bottom > top && other.top < top) || (other.top < bottom && other.bottom > top)) 
-                && (other.isPushable || other.isPlayer))
+                && (other.isPushable || other.isPlayer || other.isTurtle))
             {
                 isActivated = true;
                 break;

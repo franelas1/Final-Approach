@@ -12,7 +12,7 @@ public class MyGame : Game {
 	public AnimationSprite water;
     public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
-        LoadLevel1();
+        LoadDemo();
 		
     }
 	// For every game object, Update is called every frame, by the engine:
@@ -262,7 +262,10 @@ public class MyGame : Game {
         Door door = new Door("wall.png", 1, 1, new Vec2(800, 700), false, button1, new Vec2(800, 400));
         AddChild(door);
         rigidBodies.Add(door);
-        
+
+        Turtle turtle = new Turtle("colors.png", 1, 1, new Vec2(600, 500), true);
+        AddChild(turtle);
+        rigidBodies.Add(turtle);
 
         /*
         RigidBody wall = new RigidBody("square.png", 1, 1, new Vec2(1200 , height / 2), false);

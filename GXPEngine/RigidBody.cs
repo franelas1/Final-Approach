@@ -26,6 +26,9 @@ public class RigidBody : AnimationSprite
     public RigidBody bcb;
     public bool isPlayer;
     public bool isPushable = false;
+    public bool isTurtle = false;
+    public bool inWater = false;
+    public bool flipped = false;
     public bool grounded;
     public float top;
     public float bottom;
@@ -48,7 +51,7 @@ public class RigidBody : AnimationSprite
 
     public void Update() 
     {
-        
+        inWater = false;
         //Follow Mouse
         if (followMouse)
         {
@@ -65,10 +68,14 @@ public class RigidBody : AnimationSprite
             acceleration.y = gravity;
             if ((onBox || y >= myGame.water.y))
             {
+                inWater = true;
                 acceleration.SetXY(acceleration.x, 0);
-                if (onBox) velocity.y = -1f;
-                else if (velocity.y > 0.1) { acceleration.SetXY(acceleration.x, velocity.y * -0.1f); }
-                else if (y - myGame.water.y > -5) { acceleration.SetXY(acceleration.x, -0.05f); }
+                if (onBox)
+                { velocity.y = -1f; velocity.x = bcb.velocity.x * 1.25f; }
+                //if (onBox) velocity.y = ((bcb.top - (height / 2 + 1)) - y);
+                else if (velocity.y > 0.1 && !isTurtle) { acceleration.SetXY(acceleration.x, velocity.y * -0.1f); }
+                else if (y - myGame.water.y > -5 && !isTurtle) { acceleration.SetXY(acceleration.x, -0.05f); }
+                else if (isTurtle) { velocity.SetXY(velocity.x, myGame.water.y - y); }
 
             }
 
@@ -167,7 +174,7 @@ public class RigidBody : AnimationSprite
 
 
 
-                if (other.isPushable)
+                if (other.isPushable || other.isTurtle)
                 {
                     bcb = other;
                     velocity.y = 0;
@@ -204,10 +211,12 @@ public class RigidBody : AnimationSprite
                 if (other.isPushable)
                 {
                      velocity.x = 0;
+                    flipped = !flipped;
                 }
                 else
                 {
                     velocity.x = -velocity.x * bounciness;
+                    flipped = !flipped;
                 }
                 collided = true;
                 lrc = true;
@@ -225,10 +234,12 @@ public class RigidBody : AnimationSprite
                 if (other.isPushable)
                 {
                     velocity.x = 0;
+                    flipped = !flipped;
                 }
                 else
                 {
                     velocity.x = -velocity.x * bounciness;
+                    flipped = !flipped;
                 }
                 collided = true;
                 lrc = true;
@@ -245,7 +256,7 @@ public class RigidBody : AnimationSprite
                && (isPlayer) && Input.GetKey(Key.RIGHT)) other.acceleration.x = acceleration.x;
             
 
-            if (other.isPushable && other.bottom >= myGame.water.y && ((other.left < left && other.right > left) || (other.right > right && other.left < right)) && (bottom - 4 < other.top && bottom + 4 > other.top) && isPlayer && bc && bcb == other) { onBox = true; position.y = other.top - (height / 2); }
+            if ((other.isPushable || other.isTurtle)&& other.bottom >= myGame.water.y && ((other.left < left && other.right > left) || (other.right > right && other.left < right)) && (bottom - 4 < other.top && bottom + 4 > other.top) && isPlayer && bc && bcb == other) { onBox = true; position.y = other.top - (height / 2); }
 
         }
         
