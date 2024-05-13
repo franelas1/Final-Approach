@@ -9,7 +9,7 @@ public class MyGame : Game {
 	public List<RigidBody> rigidBodies = new List<RigidBody>();
     public List<Sprite> divingBells = new List<Sprite>();
     public int currentLevel;
-    float waterSpeed = 1.5f;
+    float waterSpeed = 0.75f;
 	public AnimationSprite water;
     public MyGame() : base(1920, 1080, false, false)     // Create a window that's 800x600 and NOT fullscreen
 	{

@@ -73,7 +73,7 @@ public class RigidBody : AnimationSprite
                 inWater = true;
                 acceleration.SetXY(acceleration.x, 0);
                 if (onBox)
-                { velocity.y = -2.7f; velocity.x = bcb.velocity.x * 2.7f; }
+                { velocity.y = -2.7f; velocity.x = bcb.velocity.x * 1.3f; }
                 //if (onBox) velocity.y = ((bcb.top - (height / 2 + 1)) - y);
                 else if (velocity.y > 0.23 && !isTurtle) { acceleration.SetXY(acceleration.x, velocity.y * -0.23f); }
                 else if (y - myGame.water.y > -5 && !isTurtle) { acceleration.SetXY(acceleration.x, -0.115f); }
