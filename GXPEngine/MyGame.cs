@@ -50,11 +50,16 @@ public class MyGame : Game {
         Sprite bg = new Sprite("background.png");
         AddChild(bg);
 
+        Sprite exit = new Sprite("door.png");
+        AddChild(exit);
+        exit.SetOrigin(exit.width / 2, exit.height / 2);
+        exit.scale = 4;
+        exit.SetXY(100, 180);
+        divingBells.Add(exit);
 
         Sprite blank = new Sprite("square.png");
         AddChild(blank);
         blank.alpha = 0f;
-        
         
 
         RigidBody wall = new RigidBody("square.png", 1, 1, new Vec2(width, height / 2), false);
@@ -263,6 +268,13 @@ public class MyGame : Game {
         Sprite bg = new Sprite("background.png");
         AddChild(bg);
 
+        Sprite exit = new Sprite("door.png");
+        AddChild(exit);
+        exit.SetOrigin(exit.width / 2, exit.height / 2);
+        exit.scale = 4;
+        exit.SetXY(1200, 700);
+        divingBells.Add(exit);
+
         currentLevel = 0;
         RigidBody ball1 = new RigidBody("square.png", 1, 1, new Vec2(300, 350), true);
         AddChild(ball1);
@@ -292,9 +304,9 @@ public class MyGame : Game {
         Fan fan = new Fan("fan.png", 1, 1, new Vec2(100, 800), false, button);
         AddChild(fan);
 
-        Door door = new Door("wall.png", 1, 1, new Vec2(800, 700), false, button1, new Vec2(800, 700));
+       /* Door door = new Door("wall.png", 1, 1, new Vec2(800, 700), false, button1, new Vec2(800, 700));
         AddChild(door);
-        rigidBodies.Add(door);
+        rigidBodies.Add(door);*/
 
         Turtle turtle = new Turtle("colors.png", 1, 1, new Vec2(600, 500), true);
         AddChild(turtle);

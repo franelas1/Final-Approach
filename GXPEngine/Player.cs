@@ -8,7 +8,7 @@ using GXPEngine;
 
 public class Player : RigidBody
 {
-    
+    bool won = false;
     private float jumpForce = 12f;
     
     public Player(string filename, int cols, int rows, Vec2 pos, bool moving, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, keepInCache, addCollider)
@@ -54,11 +54,24 @@ public class Player : RigidBody
             if (y > other.y - other.height / 2 && y < other.y + other.height / 2 &&
                 x > other.x - other.width / 2 && y < other.x + other.height / 2)
             {
-                inBell = true;
+                if(other.alpha != 1f)
+                {
+                    inBell = true;
+                    continue;
+                }
+                else
+                {
+                    won = true;
+                }
             }
         }
         
         if (y > myGame.water.y && !inBell) Death();
+        if (won)
+        {
+            myGame.currentLevel++;
+            Death();
+        }
     }
 
     public void Death()
@@ -67,6 +80,8 @@ public class Player : RigidBody
         LateDestroy();
         myGame.Reload();
     }
+
+    
 
 }
 

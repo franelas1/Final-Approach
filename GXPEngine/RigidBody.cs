@@ -1,4 +1,4 @@
-﻿using GXPEngine;
+using GXPEngine;
 using System.Diagnostics.Eventing.Reader;
 
 public class RigidBody : AnimationSprite
