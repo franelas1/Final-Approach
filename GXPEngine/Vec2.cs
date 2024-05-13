@@ -58,6 +58,7 @@ public struct Vec2
     {
         return new Vec2(left * right.x, left * right.y);
     }
+
     public static Vec2 operator *(Vec2 left, float right)
     {
         return new Vec2(left.x * right, left.y * right);
@@ -135,7 +136,6 @@ public struct Vec2
     {
         RotateAroundRadians(point, Deg2Rad(deg));
     }
-
 
     public override string ToString()
     {

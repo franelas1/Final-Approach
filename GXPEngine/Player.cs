@@ -20,6 +20,7 @@ public class Player : RigidBody
     public void Update()
     {
         base.Update();
+        inBell = false;
 
         /*
         if (Input.GetKey(Key.LEFT))
@@ -48,10 +49,16 @@ public class Player : RigidBody
 
         if (Input.GetKeyDown(Key.SPACE) && grounded && tempY+5 > position.y && tempY-5 < position.y) { velocity.SetXY(velocity.x, -jumpForce); grounded = false; }
 
-
-        //if (y > myGame.water.y) Death();
+        foreach (Sprite other in myGame.divingBells)
+        {
+            if (y > other.y - other.height / 2 && y < other.y + other.height / 2 &&
+                x > other.x - other.width / 2 && y < other.x + other.height / 2)
+            {
+                inBell = true;
+            }
+        }
         
-
+        if (y > myGame.water.y && !inBell) Death();
     }
 
     public void Death()

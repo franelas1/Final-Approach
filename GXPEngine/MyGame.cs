@@ -7,6 +7,7 @@ using TiledMapParser;                           // System.Drawing contains drawi
 public class MyGame : Game {
 
 	public List<RigidBody> rigidBodies = new List<RigidBody>();
+    public List<Sprite> divingBells = new List<Sprite>();
     public int currentLevel;
     float waterSpeed = 0.33f;
 	public AnimationSprite water;
@@ -19,8 +20,8 @@ public class MyGame : Game {
 	void Update() 
 	{
 		WaterControls();
-        if (Input.GetKey(Key.ZERO)) { Reload(); currentLevel = 0; }
-        if (Input.GetKey(Key.ONE)) { Reload(); currentLevel = 1; }
+        if (Input.GetKeyDown(Key.ZERO)) { Reload(); currentLevel = 0; } 
+        if (Input.GetKeyDown(Key.ONE)) { Reload(); currentLevel = 1; }
     }
 
     void Reload() 
@@ -48,7 +49,7 @@ public class MyGame : Game {
         Sprite blank = new Sprite("square.png");
         AddChild(blank);
         blank.alpha = 0f;
-
+        
         
 
         RigidBody wall = new RigidBody("square.png", 1, 1, new Vec2(width, height / 2), false);
@@ -301,6 +302,15 @@ public class MyGame : Game {
         Player player = new Player("colors.png", 1, 1, new Vec2(50, 350), true);
         AddChild(player);
         rigidBodies.Add(player);
+
+        Sprite bell = new Sprite("wall.png");
+        AddChild(bell);
+        bell.SetOrigin(bell.width / 2, bell.height / 2);
+        bell.SetXY(1200, 700);
+        bell.SetScaleXY(5);
+        bell.SetColor(1, 1, 0);
+        bell.alpha = 0.5f;
+        divingBells.Add(bell);
 
         water = new AnimationSprite("square.png", 1, 1);
         AddChild(water);

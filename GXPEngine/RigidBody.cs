@@ -34,6 +34,8 @@ public class RigidBody : AnimationSprite
     public float bottom;
     public float left;
     public float right;
+    public bool inBell = false;
+
 
     public bool onBox = false;
 
@@ -66,7 +68,7 @@ public class RigidBody : AnimationSprite
         {
             
             acceleration.y = gravity;
-            if ((onBox || y >= myGame.water.y))
+            if ((onBox || y >= myGame.water.y) && !inBell)
             {
                 inWater = true;
                 acceleration.SetXY(acceleration.x, 0);
