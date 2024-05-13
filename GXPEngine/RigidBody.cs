@@ -318,10 +318,10 @@ public class RigidBody : AnimationSprite
 
             if (other.isPushable && (left - 3 <= other.right && right > other.right) &&
                 ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
-               && (isPlayer) && ((Input.GetKey(Key.LEFT)) || Input.GetKey(Key.A))) other.acceleration.x = acceleration.x * 2;
+               && (isPlayer) && ((Input.GetKey(Key.LEFT)) || Input.GetKey(Key.A))) other.acceleration.x = acceleration.x * 4;
             else if (other.isPushable && (right + 3 >= other.left && left < other.left) &&
                 ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
-               && (isPlayer) && ((Input.GetKey(Key.RIGHT)) || Input.GetKey(Key.D))) other.acceleration.x = acceleration.x * 2;
+               && (isPlayer) && ((Input.GetKey(Key.RIGHT)) || Input.GetKey(Key.D))) other.acceleration.x = acceleration.x * 4;
 
 
             if ((other.isPushable || other.isTurtle) && other.bottom >= myGame.water.y && ((other.left < left && other.right > left) || (other.right > right && other.left < right) || (other.left > left && other.right < right)) && (bottom - 4 < other.top && bottom + 4 > other.top) && isPlayer && bc && bcb == other) { onBox = true; position.y = other.top - (height / 2); }

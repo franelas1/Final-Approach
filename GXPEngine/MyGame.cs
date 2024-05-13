@@ -159,7 +159,7 @@ public class MyGame : Game {
         AddChild(button6);
         button6.SetColor(0.4f, 0.8f, 0.6f);
 
-        Door door = new Door("wall.png", 1, 1, new Vec2(450, 800), false, button, new Vec2(450, 600));
+        Door door = new Door("wall.png", 1, 1, new Vec2(550, 800), false, button, new Vec2(550, 600));
         blank.AddChild(door);
         rigidBodies.Add(door);
         door.SetColor(0.1f, 0.6f, 0.1f);
@@ -174,19 +174,17 @@ public class MyGame : Game {
         rigidBodies.Add(door2);
         door2.SetColor(1f, 1f, 0);
 
-        Door door3 = new Door("wall.png", 1, 1, new Vec2(1220, 500), false, button5, new Vec2(1500, 500));
+        Door door3 = new Door("wallTurn.png", 1, 1, new Vec2(1220, 500), false, button5, new Vec2(1500, 500));
         blank.AddChild(door3);
         rigidBodies.Add(door3);
         door3.SetColor(1f, 0.6f, 0f);
-        door3.scaleY = 0.5f;
-        door3.scaleX = 4.5f;
+        
 
-        Door door4 = new Door("wall.png", 1, 1, new Vec2(1500, 380), false, button6, new Vec2(1220, 380));
+        Door door4 = new Door("wallTurn.png", 1, 1, new Vec2(1500, 380), false, button6, new Vec2(1220, 380));
         blank.AddChild(door4);
         rigidBodies.Add(door4);
         door4.SetColor(0.4f, 0.8f, 0.6f);
-        door4.scaleY = 0.5f;
-        door4.scaleX = 4.5f;
+        
 
         Door door5 = new Door("wall.png", 1, 1, new Vec2(1000, 370), false, button3, new Vec2(1000, 150));
         blank.AddChild(door5);
@@ -348,7 +346,8 @@ public class MyGame : Game {
         {
             
             water.y += waterSpeed;
-            if (water.y > height - 100)
+            if (water.y > height)
+            water.y = height;
         }
         if (Input.GetKey(Key.UP))
         {
