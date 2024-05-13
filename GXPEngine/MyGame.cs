@@ -9,7 +9,7 @@ public class MyGame : Game {
 	public List<RigidBody> rigidBodies = new List<RigidBody>();
     public List<Sprite> divingBells = new List<Sprite>();
     public int currentLevel;
-    float waterSpeed = 0.75f;
+    public float waterSpeed = 2f;
 	public AnimationSprite water;
     public MyGame() : base(1920, 1080, false, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
@@ -27,6 +27,7 @@ public class MyGame : Game {
     public void Reload() 
     {
         rigidBodies.Clear();
+        divingBells.Clear();
        foreach (GameObject o in GetChildren())
         {
             o.LateDestroy();

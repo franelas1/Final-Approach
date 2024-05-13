@@ -34,11 +34,11 @@ public class Player : RigidBody
         */
 
 
-        if (Input.GetKey(Key.LEFT) || Input.GetKey(Key.A))
+        if (Input.GetKey(Key.A))
         {
             acceleration.SetXY(-0.23f, acceleration.y);
         }
-        else if (Input.GetKey(Key.RIGHT) || Input.GetKey(Key.D))
+        else if (Input.GetKey(Key.D))
         {
             acceleration.SetXY(0.23f, acceleration.y);
         }
