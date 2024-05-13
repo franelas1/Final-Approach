@@ -46,6 +46,10 @@ public class MyGame : Game {
     {
         currentLevel = 1;
 
+        Sprite bg = new Sprite("background.png");
+        AddChild(bg);
+
+
         Sprite blank = new Sprite("square.png");
         AddChild(blank);
         blank.alpha = 0f;
