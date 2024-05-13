@@ -65,6 +65,7 @@ public class Player : RigidBody
     {
         myGame.rigidBodies.Remove(this);
         LateDestroy();
+        myGame.Reload();
     }
 
 }

@@ -24,7 +24,7 @@ public class MyGame : Game {
         if (Input.GetKeyDown(Key.ONE)) { currentLevel = 1; Reload();  }
     }
 
-    void Reload() 
+    public void Reload() 
     {
         rigidBodies.Clear();
        foreach (GameObject o in GetChildren())
