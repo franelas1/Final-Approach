@@ -67,14 +67,14 @@ public class Fan : AnimationSprite
             {
                 if (other.top > top && other.top < bottom && other.right < left && (other.isPushable /*|| other.isPlayer*/))
                 {
-                    other.acceleration.SetXY(-0.1f, other.acceleration.y);
+                    other.acceleration.SetXY(-0.23f, other.acceleration.y);
                 }
             }
             if(!isLeft)
             {
                 if(other.top > top && other.top < bottom && other.left > right && (other.isPushable /*|| other.isPlayer*/))
                 {
-                    other.acceleration.SetXY(0.1f,other.acceleration.y);
+                    other.acceleration.SetXY(0.23f,other.acceleration.y);
                 }
             }
         }

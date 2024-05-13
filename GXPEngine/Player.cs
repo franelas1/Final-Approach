@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +9,7 @@ using GXPEngine;
 public class Player : RigidBody
 {
     
-    private float jumpForce = 6f;
+    private float jumpForce = 12f;
     
     public Player(string filename, int cols, int rows, Vec2 pos, bool moving, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, keepInCache, addCollider)
     {
@@ -33,21 +33,21 @@ public class Player : RigidBody
         }
         */
 
-        
-        if (Input.GetKey(Key.LEFT))
+
+        if (Input.GetKey(Key.LEFT) || Input.GetKey(Key.A))
         {
-            acceleration.SetXY(-0.1f, acceleration.y);
+            acceleration.SetXY(-0.23f, acceleration.y);
         }
-        else if (Input.GetKey(Key.RIGHT))
+        else if (Input.GetKey(Key.RIGHT) || Input.GetKey(Key.D))
         {
-            acceleration.SetXY(0.1f, acceleration.y);
+            acceleration.SetXY(0.23f, acceleration.y);
         }
         else
         {
             acceleration.x = 0;
         }
 
-        if (Input.GetKeyDown(Key.SPACE) && grounded && tempY+5 > position.y && tempY-5 < position.y) { velocity.SetXY(velocity.x, -jumpForce); grounded = false; }
+        if ((Input.GetKeyDown(Key.SPACE) || (Input.GetKeyDown(Key.W))) && grounded && tempY+13 > position.y && tempY-13 < position.y) { velocity.SetXY(velocity.x, -jumpForce); grounded = false; }
 
         foreach (Sprite other in myGame.divingBells)
         {

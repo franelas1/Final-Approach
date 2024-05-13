@@ -32,13 +32,13 @@ public class Turtle : RigidBody
             if (!flipped)
             {
                 Mirror(false, false);
-                velocity.SetXY(1, velocity.y);
+                velocity.SetXY(2.3f, velocity.y);
             }
 
             else
             {
                 Mirror(true, false);
-                velocity.SetXY(-1, velocity.y);
+                velocity.SetXY(-2.3f, velocity.y);
             }
             
         }

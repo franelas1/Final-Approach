@@ -15,8 +15,8 @@ public class RigidBody : AnimationSprite
 
     public Vec2 position;
     public Vec2 velocity;
-    private float gravity = 0.1f;
-    public float maxSpeed = 3;
+    private float gravity = 0.5f;
+    public float maxSpeed = 7;
     public Vec2 acceleration;
     public float bounciness = 0;
     public bool followMouse = false;
@@ -73,17 +73,17 @@ public class RigidBody : AnimationSprite
                 inWater = true;
                 acceleration.SetXY(acceleration.x, 0);
                 if (onBox)
-                { velocity.y = -1f; velocity.x = bcb.velocity.x * 1.25f; }
+                { velocity.y = -2.7f; velocity.x = bcb.velocity.x * 2.7f; }
                 //if (onBox) velocity.y = ((bcb.top - (height / 2 + 1)) - y);
-                else if (velocity.y > 0.1 && !isTurtle) { acceleration.SetXY(acceleration.x, velocity.y * -0.1f); }
-                else if (y - myGame.water.y > -5 && !isTurtle) { acceleration.SetXY(acceleration.x, -0.05f); }
+                else if (velocity.y > 0.23 && !isTurtle) { acceleration.SetXY(acceleration.x, velocity.y * -0.23f); }
+                else if (y - myGame.water.y > -5 && !isTurtle) { acceleration.SetXY(acceleration.x, -0.115f); }
                 else if (isTurtle) { velocity.SetXY(velocity.x, myGame.water.y - y); }
 
             }
 
             if (acceleration.x == 0)
             {
-                acceleration.x = -velocity.x / 30;
+                acceleration.x = -velocity.x / 12;
             }
             if (velocity.x >= maxSpeed)
             {
@@ -170,7 +170,7 @@ public class RigidBody : AnimationSprite
                 t = (Mathf.Abs(sim.y - position.y) / Mathf.Abs(other.top - position.y));
                 
 
-                grounded = true;
+                
                 if(isPlayer)
                 tempY = position.y;
 
@@ -187,9 +187,12 @@ public class RigidBody : AnimationSprite
                 collided = true;
 
             }
-            
+            if (other.top < sim.y + (height / 2) + 10 && other.left < right && other.right > left && other.bottom > top)
+            {
+                grounded = true;
+            }
 
-            if (other.bottom > sim.y - (height / 2) && other.left < right && other.right > left && other.top < bottom)
+                if (other.bottom > sim.y - (height / 2) && other.left < right && other.right > left && other.top < bottom)
             {
                 if (Mathf.Abs(position.y - sim.y) / (Mathf.Abs(position.y - other.bottom)) > t || t == 0)
                 {
@@ -252,13 +255,13 @@ public class RigidBody : AnimationSprite
             
             if (other.isPushable && (left - 3 <= other.right && right > other.right) &&
                 ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
-               && (isPlayer) && Input.GetKey(Key.LEFT)) other.acceleration.x = acceleration.x;
+               && (isPlayer) && ((Input.GetKey(Key.LEFT)) || Input.GetKey(Key.A))) other.acceleration.x = acceleration.x;
             else if (other.isPushable && (right + 3 >= other.left && left < other.left) &&
                 ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
-               && (isPlayer) && Input.GetKey(Key.RIGHT)) other.acceleration.x = acceleration.x;
+               && (isPlayer) && ((Input.GetKey(Key.RIGHT)) || Input.GetKey(Key.D))) other.acceleration.x = acceleration.x;
             
 
-            if ((other.isPushable || other.isTurtle)&& other.bottom >= myGame.water.y && ((other.left < left && other.right > left) || (other.right > right && other.left < right)) && (bottom - 4 < other.top && bottom + 4 > other.top) && isPlayer && bc && bcb == other) { onBox = true; position.y = other.top - (height / 2); }
+            if ((other.isPushable || other.isTurtle)&& other.bottom >= myGame.water.y && ((other.left < left && other.right > left) || (other.right > right && other.left < right) || (other.left > left && other.right < right)) && (bottom - 4 < other.top && bottom + 4 > other.top) && isPlayer && bc && bcb == other) { onBox = true; position.y = other.top - (height / 2); }
 
         }
         

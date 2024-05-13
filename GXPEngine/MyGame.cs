@@ -9,9 +9,9 @@ public class MyGame : Game {
 	public List<RigidBody> rigidBodies = new List<RigidBody>();
     public List<Sprite> divingBells = new List<Sprite>();
     public int currentLevel;
-    float waterSpeed = 0.33f;
+    float waterSpeed = 1.5f;
 	public AnimationSprite water;
-    public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
+    public MyGame() : base(1920, 1080, false, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
         LoadLevel1();
 		
@@ -20,8 +20,8 @@ public class MyGame : Game {
 	void Update() 
 	{
 		WaterControls();
-        if (Input.GetKeyDown(Key.ZERO)) { Reload(); currentLevel = 0; } 
-        if (Input.GetKeyDown(Key.ONE)) { Reload(); currentLevel = 1; }
+        if (Input.GetKeyDown(Key.ZERO)) { currentLevel = 0; Reload();  }
+        if (Input.GetKeyDown(Key.ONE)) { currentLevel = 1; Reload();  }
     }
 
     void Reload() 
@@ -283,7 +283,7 @@ public class MyGame : Game {
         Fan fan = new Fan("fan.png", 1, 1, new Vec2(100, 800), false, button);
         AddChild(fan);
 
-        Door door = new Door("wall.png", 1, 1, new Vec2(800, 700), false, button1, new Vec2(800, 400));
+        Door door = new Door("wall.png", 1, 1, new Vec2(800, 700), false, button1, new Vec2(800, 700));
         AddChild(door);
         rigidBodies.Add(door);
 
