@@ -259,6 +259,9 @@ public class MyGame : Game {
     }
     void LoadDemo()
     {
+        Sprite bg = new Sprite("background.png");
+        AddChild(bg);
+
         currentLevel = 0;
         RigidBody ball1 = new RigidBody("square.png", 1, 1, new Vec2(300, 350), true);
         AddChild(ball1);
@@ -266,16 +269,17 @@ public class MyGame : Game {
         ball1.isPushable = true;
         ball1.scale = 0.9f;
 
-        RigidBody floor = new RigidBody("square.png", 1, 1, new Vec2(width / 2, 200), false);
+        RigidBody floor = new RigidBody("testtile.png", 1, 1, new Vec2(width / 2, 200), false);
         AddChild(floor);
         rigidBodies.Add(floor);
-        floor.scaleX = 40;
+        floor.scaleX = 3;
+        floor.scaleY = 0.3f;
         floor.followMouse = false;
 
-        RigidBody floor1 = new RigidBody("square.png", 1, 1, new Vec2(width / 6, height - 200), false);
+        RigidBody floor1 = new RigidBody("testtile.png", 1, 1, new Vec2(width / 6, height - 70), false);
         AddChild(floor1);
         rigidBodies.Add(floor1);
-        floor1.scaleX = 40;
+        floor1.scaleX = 4;
         floor1.followMouse = false;
 
         Button button = new Button("checkers.png", 1, 1, new Vec2(500, 800));
