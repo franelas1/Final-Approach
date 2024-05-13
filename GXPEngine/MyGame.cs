@@ -347,6 +347,11 @@ public class MyGame : Game {
         if (Input.GetKey(Key.DOWN))
         {
             water.y += waterSpeed;
+<<<<<<< Updated upstream
+=======
+            if (water.y > height - 100)
+                water.y = height - 100;
+>>>>>>> Stashed changes
         }
         if (Input.GetKey(Key.UP))
         {
