@@ -113,7 +113,7 @@ public class RigidBody : AnimationSprite
 
             if (acceleration.x == 0)
             {
-                acceleration.x = -velocity.x / 12;
+                acceleration.x = -velocity.x / 5;
             }
             if (velocity.x >= maxSpeed)
             {
