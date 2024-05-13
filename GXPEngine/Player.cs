@@ -52,7 +52,7 @@ public class Player : RigidBody
         foreach (Sprite other in myGame.divingBells)
         {
             if (y > other.y - other.height / 2 && y < other.y + other.height / 2 &&
-                x > other.x - other.width / 2 && y < other.x + other.height / 2)
+                x > other.x - other.width / 2 && x < other.x + other.height / 2)
             {
                 if(other.alpha != 1f)
                 {

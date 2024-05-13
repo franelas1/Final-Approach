@@ -346,7 +346,10 @@ public class MyGame : Game {
 	{
         if (Input.GetKey(Key.DOWN))
         {
+            
             water.y += waterSpeed;
+            if (water.x > -50)
+                water.x = -50;
         }
         if (Input.GetKey(Key.UP))
         {
