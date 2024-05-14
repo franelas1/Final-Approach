@@ -14,7 +14,7 @@ public class Turtle : RigidBody
     {
         isTurtle = true;
 
-        turtleSFX = new Sound("sfx/26.wav", true).Play();
+        turtleSFX = new Sound("sfx/26.wav", true, true).Play();
         turtleSFX.IsPaused = true;
         myGame.soundChannels.Add(turtleSFX);
     }

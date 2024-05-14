@@ -5,18 +5,18 @@ public class Player : RigidBody
     bool won = false;
     bool walking = false;
     bool deathPlayed = false;
+    private bool turnedRight = true;
     private SoundChannel deathSFX;
-    private Sound walkSFX = new Sound("sfx/1.wav");
+    //private Sound walkSFX = new Sound("sfx/1.wav");
     private SoundChannel airSFX;
     
-    /*bool moving = false;*/
     private float jumpForce = 12f;
 
     public Player(string filename, int cols, int rows, Vec2 pos, bool moving, int frames = -1, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, frames, keepInCache, addCollider)
     {
         bounciness = 0;
         isPlayer = true;
-        airSFX = new Sound("sfx/19.wav", true).Play();
+        airSFX = new Sound("sfx/19.wav", true, true).Play();
         myGame.soundChannels.Add(airSFX);
     }
 
@@ -42,18 +42,20 @@ public class Player : RigidBody
 
         if (Input.GetKey(Key.A))
         {
+            turnedRight = false;
             if (!walking)
             {
-                walkSFX.Play();
+                //walkSFX.Play();
             }
             walking = true;
             acceleration.SetXY(-0.23f, acceleration.y);
         }
         else if (Input.GetKey(Key.D))
         {
+            turnedRight = true;
             if (!walking)
             {
-                walkSFX.Play();
+                //walkSFX.Play();
             }
             walking = true;
             acceleration.SetXY(0.23f, acceleration.y);
@@ -92,8 +94,8 @@ public class Player : RigidBody
             myGame.currentLevel++;
             myGame.Reload();
         }
-
-        /*Animate(moving, grounded);*/
+        DirectionSetter(turnedRight);
+        Animation(walking, grounded, isPushing);
     }
 
     public void Death()
@@ -102,7 +104,7 @@ public class Player : RigidBody
 
         if (deathSFX == null)
         {
-            deathSFX = new Sound("sfx/16.wav").Play();
+            deathSFX = new Sound("sfx/16.wav", false, true).Play();
             deathPlayed = true;
         }
 
@@ -113,11 +115,47 @@ public class Player : RigidBody
 
     }
 
-    void Animate(bool moving_temp, bool grounded_temp)
+    void Animation(bool walking_temp, bool grounded_temp, bool isPushing_temp)
     {
-        if(!moving_temp)
+        if(!grounded_temp)
         {
-            SetCycle(0, 5);
+            if(velocity.y < -1f)
+            {
+                SetCycle(18, 1);
+            }
+            else if (velocity.y >= -1f && velocity.y <= 1f)
+            {
+                SetCycle(19, 1);
+            }
+            else if (velocity.y > 1f)
+            {
+                SetCycle(20, 3, 5);
+            }
+        }
+        else if(isPushing_temp)
+        {
+            SetCycle(23, 12, 3);
+        }
+        else if(walking_temp)
+        {
+            SetCycle(6, 12, 3);
+        }
+        else
+        {
+            SetCycle(0, 6, 5);
+        }
+        Animate();
+    }
+
+    void DirectionSetter(bool isTurnedRight)
+    {
+        if(isTurnedRight)
+        {
+            Mirror(false, false);
+        }
+        else
+        {
+            Mirror(true, false);
         }
     }
 

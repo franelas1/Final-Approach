@@ -65,12 +65,12 @@ public class MyGame : Game
         ambientSFX = new Sound("sfx/17.wav", true, true).Play();
         soundChannels.Add(ambientSFX);
 
-        lowerSFX = new Sound("sfx/24.wav", true).Play();
+        lowerSFX = new Sound("sfx/24.wav", true, true).Play();
         lowerSFX.IsPaused = true;
         soundChannels.Add(lowerSFX);
 
 
-        raiseSFX = new Sound("sfx/23.wav", true).Play();
+        raiseSFX = new Sound("sfx/23.wav", true, true).Play();
         raiseSFX.IsPaused = true;
         soundChannels.Add(raiseSFX);
 
@@ -349,7 +349,11 @@ public class MyGame : Game
         wall.followMouse = false;
         */
 
-        Player player = new Player("colors.png", 1, 1, new Vec2(100, 350), true);
+        /*Player player = new Player("colors.png", 1, 1, new Vec2(100, 350), true);
+        AddChild(player);
+        rigidBodies.Add(player);*/
+
+        Player player = new Player("candle.png", 7, 7, new Vec2(120, 700), true);
         AddChild(player);
         rigidBodies.Add(player);
 

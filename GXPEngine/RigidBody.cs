@@ -1,5 +1,5 @@
-using System;
 using GXPEngine;
+using System;
 
 public class RigidBody : AnimationSprite
 {
@@ -31,25 +31,23 @@ public class RigidBody : AnimationSprite
     public float right;
     public bool inBell = false;
 
-    public Sound landSFX = new Sound("sfx/3.wav");
-    public Sound landBoxSFX = new Sound("sfx/15.wav");
-    public Sound splashSFX = new Sound("sfx/8.wav");
-
+    public Sound landSFX = new Sound("sfx/3.wav", false, true);
+    public Sound landBoxSFX = new Sound("sfx/15.wav", false, true);
+    public Sound splashSFX = new Sound("sfx/8.wav", false, true);
     public SoundChannel pushSFX;
 
     public bool splashed = false;
 
-
     public bool onBox = false;
 
-    public RigidBody(string filename, int cols, int rows, Vec2 pos, bool moving,int frames = -1, bool keepInCache = false, bool addCollider = true) : base(filename, rows, cols)
+    public RigidBody(string filename, int cols, int rows, Vec2 pos, bool moving, int frames = -1, bool keepInCache = false, bool addCollider = true) : base(filename, rows, cols)
     {
         myGame = (MyGame)game;
         SetOrigin(width / 2, height / 2);
         position = pos;
         velocity = new Vec2(0, 0);
 
-        pushSFX = new Sound("sfx/20.wav", true).Play();
+        pushSFX = new Sound("sfx/20.wav", true, true).Play();
         pushSFX.IsPaused = true;
         myGame.soundChannels.Add(pushSFX);
 
@@ -73,8 +71,8 @@ public class RigidBody : AnimationSprite
 
         if (moving)
         {
-
             acceleration.y = gravity;
+
             if ((onBox || (!isPlayer && y >= myGame.water.y)) && !inBell)
             {
                 inWater = true;
@@ -92,7 +90,6 @@ public class RigidBody : AnimationSprite
                             splashSFX.Play();
                         splashed = true;
                         acceleration.SetXY(acceleration.x, -0.115f);
-
                     }
                     else if (onBox)
                     {
@@ -100,8 +97,6 @@ public class RigidBody : AnimationSprite
                         {
                             velocity.x = bcb.velocity.x * 1.05f;
                         }
-
-
 
                         if (Input.GetKey(Key.DOWN))
                         {
@@ -113,38 +108,31 @@ public class RigidBody : AnimationSprite
                         {
                             velocity.y = -2.7f * myGame.waterSpeed;
                             velocity.x = bcb.velocity.x * 1.75f;
-
                         }
-
-
-
-
                     }
                 }
-
                 else
                 {
-
                     velocity.SetXY(velocity.x, myGame.water.y - y);
-
                 }
             }
 
             if (isPushing)
             {
                 pushSFX.IsPaused = false;
-
             }
             else pushSFX.IsPaused = true;
+
             if (acceleration.x == 0)
             {
                 acceleration.x = -velocity.x / 5;
             }
+
             if (velocity.x >= maxSpeed)
             {
-
                 velocity.x = maxSpeed;
             }
+
             if (velocity.x <= -maxSpeed)
             {
                 velocity.x = -maxSpeed;
@@ -361,7 +349,7 @@ public class RigidBody : AnimationSprite
                     other.acceleration.x = acceleration.x * 4;
                 }
 
-                Console.WriteLine(isPushing);
+                
             }
             else isPushing = false;
 
