@@ -20,7 +20,7 @@ public class Door : RigidBody
 
     Sound moveSFX = new Sound("sfx/11.wav");
 
-    public Door(string filename, int cols, int rows, Vec2 pos, bool moving, Button button, Vec2 target, int rotation = 0, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, keepInCache, addCollider)
+    public Door(string filename, int cols, int rows, Vec2 pos, bool moving, Button button, Vec2 target,int frames = -1, int rotation = 0, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, frames, keepInCache, addCollider)
     {
         SetXY(pos.x, pos.y);
         this.button = button;
@@ -29,7 +29,7 @@ public class Door : RigidBody
         this.target = target;
         this.rotation = rotation;
 
-        SetScaleXY(0.5f, 4);
+        
     }
 
     void MoveToTarget() 

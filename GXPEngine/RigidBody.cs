@@ -42,7 +42,7 @@ public class RigidBody : AnimationSprite
 
     public bool onBox = false;
 
-    public RigidBody(string filename, int cols, int rows, Vec2 pos, bool moving, bool keepInCache = false, bool addCollider = true) : base(filename, rows: 1, cols: 1)
+    public RigidBody(string filename, int cols, int rows, Vec2 pos, bool moving,int frames = -1, bool keepInCache = false, bool addCollider = true) : base(filename, rows, cols)
     {
         myGame = (MyGame)game;
         SetOrigin(width / 2, height / 2);

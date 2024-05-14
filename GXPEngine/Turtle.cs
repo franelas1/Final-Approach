@@ -10,7 +10,7 @@ public class Turtle : RigidBody
 {
     SoundChannel turtleSFX;
     
-    public Turtle(string filename, int cols, int rows, Vec2 pos, bool moving, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, keepInCache, addCollider)
+    public Turtle(string filename, int cols, int rows, Vec2 pos, bool moving, int frames = -1, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, frames, keepInCache, addCollider)
     {
         isTurtle = true;
 

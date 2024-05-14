@@ -9,10 +9,10 @@ public class Player : RigidBody
     private Sound walkSFX = new Sound("sfx/1.wav");
     private SoundChannel airSFX;
     
-    bool moving = false;
+    /*bool moving = false;*/
     private float jumpForce = 12f;
 
-    public Player(string filename, int cols, int rows, Vec2 pos, bool moving, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, keepInCache, addCollider)
+    public Player(string filename, int cols, int rows, Vec2 pos, bool moving, int frames = -1, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, frames, keepInCache, addCollider)
     {
         bounciness = 0;
         isPlayer = true;
@@ -25,7 +25,7 @@ public class Player : RigidBody
         base.Update();
 
         inBell = false;
-        moving = false;
+        
         
 
         if (!grounded)
@@ -93,7 +93,7 @@ public class Player : RigidBody
             myGame.Reload();
         }
 
-        Animate(moving, grounded);
+        /*Animate(moving, grounded);*/
     }
 
     public void Death()
