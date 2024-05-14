@@ -25,6 +25,7 @@ public class RigidBody : AnimationSprite
     public bool flipped = false;
     public bool grounded;
     public bool isPushing;
+    public bool isWalling;
     public float top;
     public float bottom;
     public float left;
@@ -52,12 +53,18 @@ public class RigidBody : AnimationSprite
         myGame.soundChannels.Add(pushSFX);
 
         this.moving = moving;
+        if(isPushable)
+        {
+            maxVertSpeed = .1f;
+        }
     }
 
 
 
     public void Update()
     {
+
+        
         inWater = false;
         //Follow Mouse
         if (followMouse)
@@ -72,14 +79,24 @@ public class RigidBody : AnimationSprite
         if (moving)
         {
             acceleration.y = gravity;
-
-            if ((onBox || (!isPlayer && y >= myGame.water.y)) && !inBell)
+            if (bcb != null)
             {
+                if (bcb.onBox)
+                {
+                    bcb = null;
+                }
+            }
+
+            if ((onBox || (!onBox && y >= myGame.water.y)) && !inBell)
+            {
+                if(isPushable)
+                Console.WriteLine(isPushable);
                 inWater = true;
                 acceleration.SetXY(acceleration.x, 0);
-
+                
                 if (!belowPlayer)
                 {
+                    
                     if (velocity.y > 0.23 && !isTurtle)
                     {
                         acceleration.SetXY(acceleration.x, velocity.y * -0.23f);
@@ -93,26 +110,55 @@ public class RigidBody : AnimationSprite
                     }
                     else if (onBox)
                     {
-                        if (!Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+
+                        Console.WriteLine(isPushable);
+                        Console.WriteLine("buh");
+                        if (isPlayer)
                         {
-                            velocity.x = bcb.velocity.x * 1.05f;
+                            if (!Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+                            {
+                                velocity.y = 0.1f;
+                                velocity.x = bcb.velocity.x /** 1.05f*/;
+                            }
+
+                            if (Input.GetKey(Key.DOWN))
+                            {
+                                velocity.y = Mathf.Max(1, myGame.water.y - bcb.y);
+                                velocity.x = bcb.velocity.x * 1.5f;
+                            }
+
+                            else if (Input.GetKey(Key.UP))
+                            {
+                                velocity.y = -2.7f * myGame.waterSpeed;
+                                velocity.x = bcb.velocity.x * 3f;
+                            }
+                        }
+                        else
+                        {
+                            if (Input.GetKey(Key.DOWN))
+                            {
+                                velocity.y = Mathf.Max(1, myGame.water.y - bcb.y);
+                                velocity.x = bcb.velocity.x *1.15f;
+                            }
+
+                            else if (Input.GetKey(Key.UP))
+                            {
+
+                                velocity.y = -2.7f * myGame.waterSpeed;
+                                velocity.x = bcb.velocity.x * 3f;
+                            }
+                            else
+                            {
+                                velocity.y = 0.1f;
+                                velocity.x = bcb.velocity.x;
+                            }
                         }
 
-                        if (Input.GetKey(Key.DOWN))
-                        {
-                            velocity.y = myGame.water.y - bcb.y;
-                            velocity.x = bcb.velocity.x * 1.15f;
-                        }
-
-                        else if (Input.GetKey(Key.UP))
-                        {
-                            velocity.y = -2.7f * myGame.waterSpeed;
-                            velocity.x = bcb.velocity.x * 1.75f;
-                        }
                     }
                 }
                 else
                 {
+                    
                     velocity.SetXY(velocity.x, myGame.water.y - y);
                 }
             }
@@ -147,7 +193,7 @@ public class RigidBody : AnimationSprite
             {
                 velocity.y = -maxVertSpeed;
             }
-            //Euler Integration
+            
 
 
         }
@@ -222,7 +268,7 @@ public class RigidBody : AnimationSprite
 
         foreach (RigidBody other in myGame.rigidBodies)
         {
-
+            
             if (other == this || (!other.moving && !moving)) continue;
 
             if (other.top < sim.y + (height / 2) && other.left < right && other.right > left && other.bottom > top)
@@ -235,16 +281,20 @@ public class RigidBody : AnimationSprite
                 if (isPlayer)
                     tempY = position.y;
 
-
-
-                if (other.isPushable || other.isTurtle)
+                if (other == bcb && bcb.inWater)
                 {
+                    onBox = true;
+                }
 
+                if ((other.isPushable || other.isTurtle) && !isTurtle)
+                {
+                    
                     if (bcb != other)
                     {
                         if (bcb != null)
                             bcb.belowPlayer = false;
                         bcb = other;
+                        
                         bcb.belowPlayer = true;
                     }
                     velocity.y = 0;
@@ -284,6 +334,7 @@ public class RigidBody : AnimationSprite
                     t = Mathf.Abs(position.y - sim.y) / Mathf.Abs(position.y - other.bottom);
                 }
 
+                
                 velocity.y = -velocity.y * bounciness;
 
                 tc = true;
@@ -296,6 +347,11 @@ public class RigidBody : AnimationSprite
                 if ((Mathf.Abs(position.x - sim.x)) / (Mathf.Abs(position.x - other.right)) > t || t == 0)
                 {
                     t = Mathf.Abs(position.x - sim.x) / Mathf.Abs(position.x - other.right);
+                }
+
+                if(!other.moving && isPlayer)
+                {
+                    isWalling = true;
                 }
 
                 if (other.isPushable)
@@ -321,6 +377,12 @@ public class RigidBody : AnimationSprite
                 {
                     t = Mathf.Abs(sim.x - position.x) / Mathf.Abs(other.left - position.x);
                 }
+
+                if (!other.moving && isPlayer)
+                {
+                    isWalling = true;
+                }
+
                 if (other.isPushable)
                 {
                     velocity.x = 0;
@@ -336,31 +398,32 @@ public class RigidBody : AnimationSprite
 
 
             }
+            if (Input.GetKey(Key.A) && Input.GetKey(Key.D)) isPushing = false;
 
-            if (Input.GetKey(Key.A) || Input.GetKey(Key.D))
+            else if (Input.GetKey(Key.A) || Input.GetKey(Key.D))
             {
                 if (other.isPushable && (left - 3 <= other.right && right > other.right) &&
                     ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
                    && (isPlayer) && Input.GetKey(Key.A))
                 {
                     isPushing = true;
-                    other.acceleration.x = acceleration.x * 4;
+                    other.acceleration.x = velocity.x * 4;
                 }
                 else if (other.isPushable && (right + 3 >= other.left && left < other.left) &&
                     ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
                    && (isPlayer) && Input.GetKey(Key.D))
                 {
                     isPushing = true;
-                    other.acceleration.x = acceleration.x * 4;
+                    other.acceleration.x = velocity.x * 4;
                 }
 
-                
+
             }
             else isPushing = false;
 
 
 
-            if ((other.isPushable || other.isTurtle) && other.bottom >= myGame.water.y && ((other.left < left && other.right > left) || (other.right > right && other.left < right) || (other.left > left && other.right < right)) && (bottom - 4 < other.top && bottom + 4 > other.top) && isPlayer && bc && bcb == other) { onBox = true; position.y = other.top - (height / 2); }
+            if (other.bottom >= myGame.water.y && ((other.left < left && other.right > left) || (other.right > right && other.left < right) || (other.left > left && other.right < right)) && (bottom - 4 < other.top && bottom + 4 > other.top) && (isPlayer || isPushable)  && bc && bcb == other) { onBox = true; position.y = other.top - (height / 2); }
 
         }
 

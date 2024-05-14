@@ -1,5 +1,6 @@
 using GXPEngine;                                // GXPEngine contains the engine
 using System.Collections.Generic;
+using System.Drawing;
 
 public class MyGame : Game
 {
@@ -7,7 +8,8 @@ public class MyGame : Game
     public List<RigidBody> rigidBodies = new List<RigidBody>();
     public List<Sprite> divingBells = new List<Sprite>();
     public List<SoundChannel> soundChannels = new List<SoundChannel>();
-
+    Sprite bg;
+    public Player player;
     public int currentLevel;
     public float waterSpeed = 2f;
     public AnimationSprite water;
@@ -26,6 +28,7 @@ public class MyGame : Game
     // For every game object, Update is called every frame, by the engine:
     void Update()
     {
+        BackgroundUpdate();
         WaterControls();
         if (Input.GetKeyDown(Key.ZERO)) { currentLevel = 0; Reload(); }
         if (Input.GetKeyDown(Key.ONE)) { currentLevel = 1; Reload(); }
@@ -76,8 +79,11 @@ public class MyGame : Game
 
         currentLevel = 1;
 
-        Sprite bg = new Sprite("background.png");
+        bg = new Sprite("background.png");
         AddChild(bg);
+        bg.SetOrigin(bg.width / 2, bg.height / 2);
+        bg.scale = 1.2f;
+        bg.SetXY(width / 2, height / 2);
 
         Sprite edges = new Sprite("edges.png");
         AddChild(edges);
@@ -275,7 +281,7 @@ public class MyGame : Game
         box5.scale = 0.49f;
         //box5.SetColor(0.522f, 0.42f, 0.024f);
 
-        Player player = new Player("candle.png", 7, 7, new Vec2(120, 770), true);
+        player = new Player("candle.png", 7, 7, new Vec2(120, 770), true);
         AddChild(player);
         rigidBodies.Add(player);
 
@@ -302,11 +308,11 @@ public class MyGame : Game
         exit.SetXY(1200, 750);
         divingBells.Add(exit);
 
-        /*RigidBody ball1 = new RigidBody("square.png", 1, 1, new Vec2(300, 350), true);
+        RigidBody ball1 = new RigidBody("crate.png", 1, 1, new Vec2(600, 350), true);
         AddChild(ball1);
         rigidBodies.Add(ball1);
         ball1.isPushable = true;
-        ball1.scale = 0.9f;*/
+        ball1.scale = 0.49f;
 
         RigidBody floor = new RigidBody("testtile.png", 1, 1, new Vec2(width / 2, 200), false);
         AddChild(floor);
@@ -314,6 +320,10 @@ public class MyGame : Game
         floor.scaleX = 3;
         floor.scaleY = 0.3f;
         floor.followMouse = false;
+
+        RigidBody wall3 = new RigidBody("piece12.png", 1, 1, new Vec2(1860, 570), false);
+        AddChild(wall3);
+        rigidBodies.Add(wall3);
 
         RigidBody floor1 = new RigidBody("testtile.png", 1, 1, new Vec2(width / 6, height - 70), false);
         AddChild(floor1);
@@ -350,7 +360,7 @@ public class MyGame : Game
         AddChild(player);
         rigidBodies.Add(player);*/
 
-        Player player = new Player("candle.png", 7, 7, new Vec2(120, 700), true);
+        Player player = new Player("candle.png", 7, 7, new Vec2(120, 100), true);
         AddChild(player);
         rigidBodies.Add(player);
 
@@ -370,6 +380,11 @@ public class MyGame : Game
         water.y = height - 100;
         water.width = width + 100;
         water.height = height;
+    }
+
+    void BackgroundUpdate()
+    {
+        bg.SetXY(width/2 - (player.position.x /10 - 192),height / 2);
     }
 
     void WaterControls()

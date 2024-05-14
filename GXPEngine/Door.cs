@@ -16,7 +16,7 @@ public class Door : RigidBody
     Vec2 origin;
     
     Vec2 target;
-    float moveSpeed = 4f;
+    float moveSpeed = 5f;
 
     Sound moveSFX = new Sound("sfx/11.wav");
 

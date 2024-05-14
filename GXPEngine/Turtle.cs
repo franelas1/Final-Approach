@@ -24,7 +24,7 @@ public class Turtle : RigidBody
         
         base.Update();
 
-        if (y >= myGame.water.y - 5)
+        if (y >= myGame.water.y - 15)
         {
             velocity.SetXY(velocity.x, myGame.water.y - y);
             inWater = true;

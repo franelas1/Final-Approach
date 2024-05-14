@@ -1,3 +1,5 @@
+using System;
+using System.Xml;
 using GXPEngine;
 
 public class Player : RigidBody
@@ -23,12 +25,14 @@ public class Player : RigidBody
 
     public void Update()
     {
+        isWalling = false;
+
         base.Update();
 
         inBell = false;
         
         
-
+        
         if (!grounded)
         {
             airSFX.IsPaused = false;
@@ -41,84 +45,103 @@ public class Player : RigidBody
 
         }
 
-        if (Input.GetKey(Key.A))
+        if (!deathPlayed)
         {
-            turnedRight = false;
-            if (!walking)
+            if (Input.GetKey(Key.A) && Input.GetKey(Key.D))
             {
-                //walkSFX.Play();
+                walking = false;
+                acceleration.x = 0;
             }
-            walking = true;
-            acceleration.SetXY(-0.23f, acceleration.y);
-        }
-        else if (Input.GetKey(Key.D))
-        {
-            turnedRight = true;
-            if (!walking)
-            {
-                //walkSFX.Play();
-            }
-            walking = true;
-            acceleration.SetXY(0.23f, acceleration.y);
-        }
-        else
-        {
-            walking = false;
-            acceleration.x = 0;
-        }
 
-        if ((Input.GetKeyDown(Key.SPACE) || (Input.GetKeyDown(Key.W))) && grounded && tempY+13 > position.y && tempY-13 < position.y) 
-        {
-            velocity.SetXY(velocity.x, -jumpForce); grounded = false; 
-        }
-
-        foreach (Sprite other in myGame.divingBells)
-        {
-            if (y > other.y - other.height / 2 && y < other.y + other.height / 2 &&
-                x > other.x - other.width / 2 && x < other.x + other.height / 2)
+            else if (Input.GetKey(Key.A))
             {
-                if (other.alpha != 1f)
+                turnedRight = false;
+                if (!walking)
                 {
-                    inBell = true;
-                    continue;
+                    //walkSFX.Play();
                 }
-                else
+                walking = true;
+                acceleration.SetXY(-0.23f, acceleration.y);
+            }
+            else if (Input.GetKey(Key.D))
+            {
+                turnedRight = true;
+                if (!walking)
                 {
-                    won = true;
+                    //walkSFX.Play();
                 }
+                walking = true;
+                acceleration.SetXY(0.23f, acceleration.y);
+            }
+            else
+            {
+                walking = false;
+                acceleration.x = 0;
+            }
+
+            if ((Input.GetKeyDown(Key.SPACE) || (Input.GetKeyDown(Key.W))) && grounded && tempY + 13 > position.y && tempY - 13 < position.y)
+            {
+                velocity.SetXY(velocity.x, -jumpForce);
+                grounded = false;
+                isPushing = false;
+            }
+
+            foreach (Sprite other in myGame.divingBells)
+            {
+                if (y > other.y - other.height / 2 && y < other.y + other.height / 2 &&
+                    x > other.x - other.width / 2 && x < other.x + other.height / 2)
+                {
+                    if (other.alpha != 1f)
+                    {
+                        inBell = true;
+                        continue;
+                    }
+                    else
+                    {
+                        won = true;
+                    }
+                }
+            }
+            /*if (y > myGame.water.y && !inBell) Death();*/
+        }
+
+        
+
+        if (deathSFX != null)
+        {
+            if (!deathSFX.IsPlaying && deathPlayed)
+            {
+
+                myGame.Reload();
             }
         }
 
-        if (y > myGame.water.y && !inBell) Death();
         if (won)
         {
             myGame.currentLevel++;
             myGame.Reload();
         }
         DirectionSetter(turnedRight);
-        Animation(walking, grounded, isPushing);
+        Animation(walking, grounded, (isPushing || isWalling));
     }
 
     public void Death()
     {
-
-
+   
         if (deathSFX == null)
         {
-            deathSFX = new Sound("sfx/16.wav", false, true).Play();
+            Console.WriteLine("dead");
+            deathSFX = new Sound("sfx/16.wav", false).Play();
             deathPlayed = true;
-        }
-
-        if (!deathSFX.IsPlaying && deathPlayed)
-        {
-            myGame.Reload();
         }
 
     }
 
     void Animation(bool walking_temp, bool grounded_temp, bool isPushing_temp)
     {
-        if(!grounded_temp)
+        
+
+        if (!grounded_temp)
         {
             if(velocity.y < -1f)
             {
@@ -133,6 +156,8 @@ public class Player : RigidBody
                 SetCycle(20, 3, 5);
             }
         }
+
+        
         else if(isPushing_temp)
         {
             SetCycle(23, 12, 3);
@@ -141,6 +166,11 @@ public class Player : RigidBody
         {
             SetCycle(6, 12, 3);
         }
+        else if (velocity.y > 4f)
+        {
+            SetCycle(20, 3, 5);
+        }
+
         else
         {
             SetCycle(0, 6, 5);
