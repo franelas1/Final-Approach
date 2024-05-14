@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +13,6 @@ public class Turtle : RigidBody
     public Turtle(string filename, int cols, int rows, Vec2 pos, bool moving, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, keepInCache, addCollider)
     {
         isTurtle = true;
-        SetScaleXY(2,0.5f);
 
         turtleSFX = new Sound("sfx/26.wav", true).Play();
         turtleSFX.IsPaused = true;

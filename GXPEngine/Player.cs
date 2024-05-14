@@ -9,6 +9,7 @@ public class Player : RigidBody
     private Sound walkSFX = new Sound("sfx/1.wav");
     private SoundChannel airSFX;
     
+    bool moving = false;
     private float jumpForce = 12f;
 
     public Player(string filename, int cols, int rows, Vec2 pos, bool moving, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, keepInCache, addCollider)
@@ -22,7 +23,10 @@ public class Player : RigidBody
     public void Update()
     {
         base.Update();
+
         inBell = false;
+        moving = false;
+        
 
         if (!grounded)
         {
@@ -60,7 +64,10 @@ public class Player : RigidBody
             acceleration.x = 0;
         }
 
-        if ((Input.GetKeyDown(Key.SPACE) || (Input.GetKeyDown(Key.W))) && grounded && tempY + 13 > position.y && tempY - 13 < position.y) { velocity.SetXY(velocity.x, -jumpForce); grounded = false; /*walkSFX.Play();*/ }
+        if ((Input.GetKeyDown(Key.SPACE) || (Input.GetKeyDown(Key.W))) && grounded && tempY+13 > position.y && tempY-13 < position.y) 
+        {
+            velocity.SetXY(velocity.x, -jumpForce); grounded = false; 
+        }
 
         foreach (Sprite other in myGame.divingBells)
         {
@@ -85,6 +92,8 @@ public class Player : RigidBody
             myGame.currentLevel++;
             myGame.Reload();
         }
+
+        Animate(moving, grounded);
     }
 
     public void Death()
@@ -103,6 +112,16 @@ public class Player : RigidBody
         }
 
     }
+
+    void Animate(bool moving_temp, bool grounded_temp)
+    {
+        if(!moving_temp)
+        {
+            SetCycle(0, 5);
+        }
+    }
+
+    
 
 }
 
