@@ -17,6 +17,7 @@ public class Player : RigidBody
         bounciness = 0;
         isPlayer = true;
         airSFX = new Sound("sfx/19.wav", true, true).Play();
+        SetScaleXY(.75f, .75f);
         myGame.soundChannels.Add(airSFX);
     }
 

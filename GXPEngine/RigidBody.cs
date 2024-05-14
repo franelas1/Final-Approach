@@ -152,6 +152,14 @@ public class RigidBody : AnimationSprite
 
         }
 
+        top = position.y - height / 2;
+        bottom = position.y + height / 2;
+        if (isTurtle)
+        {
+            bottom = (position.y + height / 2) - 40;
+        }
+        left = position.x - width / 2;
+        right = position.x + width / 2;
 
         if (!CheckCollisions())
         {
@@ -161,10 +169,7 @@ public class RigidBody : AnimationSprite
         SetXY(position.x, position.y);
         acceleration.x = 0;
 
-        top = position.y - height / 2;
-        bottom = position.y + height / 2;
-        left = position.x - width / 2;
-        right = position.x + width / 2;
+        
     }
 
     /*public void SolveIntersections()

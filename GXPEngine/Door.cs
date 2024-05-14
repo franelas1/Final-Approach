@@ -28,8 +28,7 @@ public class Door : RigidBody
         this.origin = pos;
         this.target = target;
         this.rotation = rotation;
-
-        
+        SetScaleXY(0.6f, 0.6f);        
     }
 
     void MoveToTarget() 

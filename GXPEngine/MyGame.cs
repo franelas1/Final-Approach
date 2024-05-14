@@ -79,11 +79,14 @@ public class MyGame : Game
         Sprite bg = new Sprite("background.png");
         AddChild(bg);
 
+        Sprite edges = new Sprite("edges.png");
+        AddChild(edges);
+
         Sprite exit = new Sprite("door.png");
         AddChild(exit);
         exit.SetOrigin(exit.width / 2, exit.height / 2);
-        exit.scale = 1;
-        exit.SetXY(100, 180);
+        exit.scale = 0.8f;
+        exit.SetXY(180, 180);
         divingBells.Add(exit);
 
         Sprite blank = new Sprite("square.png");
@@ -91,163 +94,156 @@ public class MyGame : Game
         blank.alpha = 0f;
 
 
-        RigidBody wall = new RigidBody("square.png", 1, 1, new Vec2(width, height / 2), false);
+        RigidBody wall = new RigidBody("piece1.png", 1, 1, new Vec2(30, 540), false);
         AddChild(wall);
         rigidBodies.Add(wall);
-        wall.scaleY = 40;
+        
 
-        RigidBody wall1 = new RigidBody("square.png", 1, 1, new Vec2(1665, 460), false);
+        RigidBody wall1 = new RigidBody("piece13.png", 1, 1, new Vec2(1350, 540), false);
         AddChild(wall1);
         rigidBodies.Add(wall1);
-        wall1.scaleX = 0.7f;
-        wall1.scaleY = 7;
+        
 
-        RigidBody wall2 = new RigidBody("square.png", 1, 1, new Vec2(1360, 530), false);
+        RigidBody wall2 = new RigidBody("piece11.png", 1, 1, new Vec2(1620,480), false);
         AddChild(wall2);
         rigidBodies.Add(wall2);
-        wall2.scaleX = 0.3f;
-        wall2.scaleY = 4.5f;
+        
 
-        RigidBody wall3 = new RigidBody("square.png", 1, 1, new Vec2(-30, height / 2), false);
+        RigidBody wall3 = new RigidBody("piece12.png", 1, 1, new Vec2(1860, 570), false);
         AddChild(wall3);
         rigidBodies.Add(wall3);
-        wall3.scaleY = 40;
+        
 
-        RigidBody floor = new RigidBody("square.png", 1, 1, new Vec2(width / 2, 0), false);
+        RigidBody floor = new RigidBody("piece6.png", 1, 1, new Vec2(16.5f*60, 30), false);
         AddChild(floor);
         rigidBodies.Add(floor);
-        floor.scaleX = 40;
 
-        RigidBody floor1 = new RigidBody("square.png", 1, 1, new Vec2(540, 460), false);
+
+        RigidBody floor1 = new RigidBody("piece3.png", 1, 1, new Vec2(570, 390), false);
         AddChild(floor1);
         rigidBodies.Add(floor1);
-        floor1.scaleX = 17;
-        floor1.scaleY = 7;
 
-        RigidBody floor2 = new RigidBody("square.png", 1, 1, new Vec2(1340, 258), false);
+
+        RigidBody floor2 = new RigidBody("piece9.png", 1, 1, new Vec2(23.5f*60, 690), false);
         AddChild(floor2);
         rigidBodies.Add(floor2);
-        floor2.scaleX = 11;
-        floor2.scaleY = 0.7f;
+        
 
-        RigidBody floor3 = new RigidBody("square.png", 1, 1, new Vec2(1340, 660), false);
+        RigidBody floor3 = new RigidBody("piece10.png", 1, 1, new Vec2(23.5f*60, 270), false);
         AddChild(floor3);
         rigidBodies.Add(floor3);
-        floor3.scaleX = 11;
-        floor3.scaleY = 0.7f;
+        
 
-        RigidBody floor4 = new RigidBody("square.png", 1, 1, new Vec2(350, 950), false);
+        RigidBody floor4 = new RigidBody("piece2.png", 1, 1, new Vec2(7.5f*60, 16*60), false);
         AddChild(floor4);
         rigidBodies.Add(floor4);
-        floor4.scaleX = 11;
-        floor4.scaleY = 2.5f;
+        
 
-        RigidBody floor5 = new RigidBody("square.png", 1, 1, new Vec2(960, 908), false);
+        RigidBody floor5 = new RigidBody("piece4.png", 1, 1, new Vec2(17.5f* 60, 14.5f* 60), false);
         AddChild(floor5);
         rigidBodies.Add(floor5);
-        floor5.scaleX = 8.2f;
-        floor5.scaleY = 1.2f;
 
-        RigidBody floor6 = new RigidBody("square.png", 1, 1, new Vec2(1308, 956), false);
+        RigidBody floor6 = new RigidBody("piece7.png", 1, 1, new Vec2(22.5f * 60, 16*60), false);
         AddChild(floor6);
         rigidBodies.Add(floor6);
-        floor6.scaleX = 2.7f;
-        floor6.scaleY = 2.7f;
 
-        RigidBody floor7 = new RigidBody("square.png", 1, 1, new Vec2(1545, 913), false);
+        RigidBody floor7 = new RigidBody("piece8.png", 1, 1, new Vec2(26*60, 14.5f*60), false);
         AddChild(floor7);
         rigidBodies.Add(floor7);
-        floor7.scaleX = 4.6f;
-        floor7.scaleY = 1.35f;
 
-        Button buttonPurple = new Button("purpleButton.png", 1, 1, new Vec2(250, 870));
+        RigidBody floor8 = new RigidBody("piece5.png", 1, 1, new Vec2(15 * 60, 10.5f * 60), false);
+        AddChild(floor8);
+        rigidBodies.Add(floor8);
+
+
+        Button buttonPurple = new Button("purpleButton.png", 1, 1, new Vec2(8*60, 14*60));
         AddChild(buttonPurple);
-        //button.SetColor(0.1f,0.6f,0.1f);
+        
 
-        Button buttonRed = new Button("redButton.png", 1, 1, new Vec2(800, 950));
+        Button buttonRed = new Button("redButton.png", 1, 1, new Vec2(15*60, 15*60));
         AddChild(buttonRed);
         buttonRed.rotation = 180;
-        //buttonRed.SetColor(1f, 1f, 0);
+        
 
-        Button buttonGreen = new Button("greenButton.png", 1, 1, new Vec2(1370, 870));
+        Button buttonGreen = new Button("greenButton.png", 1, 1, new Vec2(24*60, 14*60));
         AddChild(buttonGreen);
-        //buttonGreen.SetColor(0.8f, 0.1f, 0.8f);
+        
 
-        Button buttonBlue = new Button("blueButton.png", 1, 1, new Vec2(1550, 640));
+        Button buttonBlue = new Button("blueButton.png", 1, 1, new Vec2(24*60, 11*60));
         AddChild(buttonBlue);
-        //buttonBlue.SetColor(1f, 0, 0.1f);
+        
 
-        Button buttonOrange = new Button("orangeButton.png", 1, 1, new Vec2(1160, 640));
+        Button buttonOrange = new Button("orangeButton.png", 1, 1, new Vec2(20*60, 11*60));
         AddChild(buttonOrange);
-        //buttonOrange.SetColor(0, 0, 1);
+        
 
-        Button buttonPink = new Button("pinkButton.png", 1, 1, new Vec2(1380, 240));
+        Button buttonPink = new Button("pinkButton.png", 1, 1, new Vec2(25*60, 240));
         AddChild(buttonPink);
-        //buttonPink.SetColor(1f, 0.6f, 0f);
+        
 
-        Button buttonYellow = new Button("yellowButton.png", 1, 1, new Vec2(1200, 240));
+        Button buttonYellow = new Button("yellowButton.png", 1, 1, new Vec2(21*60, 240));
         AddChild(buttonYellow);
-        //button6.SetColor(0.4f, 0.8f, 0.6f);
+       
 
-        Door doorPurple = new Door("purpleDoor.png", 1, 1, new Vec2(550, 800), false, buttonPurple, new Vec2(550, 600));
+        Door doorPurple = new Door("purpleDoor.png", 1, 1, new Vec2(12.25f*60, 13*60), false, buttonPurple, new Vec2(12.25f * 60, 10 * 60));
         blank.AddChild(doorPurple);
         rigidBodies.Add(doorPurple);
-        //door.SetColor(0.1f, 0.6f, 0.1f);
+        
 
-        Door doorRed1 = new Door("redDoor.png", 1, 1, new Vec2(960, 800), false, buttonRed, new Vec2(960, 1000));
+        Door doorRed1 = new Door("redDoor.png", 1, 1, new Vec2(17.25f*60, 13*60), false, buttonRed, new Vec2(17.25f * 60, 16 * 60));
         blank.AddChild(doorRed1);
         rigidBodies.Add(doorRed1);
-        //door1.SetColor(1f, 1f, 0);
+        
 
-        Door doorRed2 = new Door("redDoor.png", 1, 1, new Vec2(1150, 1000), false, buttonRed, new Vec2(1150, 800));
+        Door doorRed2 = new Door("redDoor.png", 1, 1, new Vec2(19f * 60, 16 * 60), false, buttonRed, new Vec2(19f * 60, 13 * 60));
         blank.AddChild(doorRed2);
         rigidBodies.Add(doorRed2);
-        //door2.SetColor(1f, 1f, 0);
+        
 
-        Door doorPink = new Door("pinkDoorHor.png", 1, 1, new Vec2(1220, 500), false, buttonPink, new Vec2(1500, 500));
+        Door doorPink = new Door("pinkDoorHor.png", 1, 1, new Vec2(20.5f * 60, 7.25f * 60), false, buttonPink, new Vec2(24.5f * 60, 7.25f * 60));
         blank.AddChild(doorPink);
         rigidBodies.Add(doorPink);
-        //door3.SetColor(1f, 0.6f, 0f);
+        
         
 
-        Door doorYellow = new Door("yellowDoorHor.png", 1, 1, new Vec2(1500, 380), false, buttonYellow, new Vec2(1220, 380));
+        Door doorYellow = new Door("yellowDoorHor.png", 1, 1, new Vec2(24.5f * 60, 9.25f * 60), false, buttonYellow, new Vec2(20.5f * 60, 9.25f * 60));
         blank.AddChild(doorYellow);
         rigidBodies.Add(doorYellow);
-        //door4.SetColor(0.4f, 0.8f, 0.6f);
+        
         
 
-        Door doorBlue = new Door("blueDoor.png", 1, 1, new Vec2(1000, 370), false, buttonBlue, new Vec2(1000, 150));
+        Door doorBlue = new Door("blueDoor.png", 1, 1, new Vec2(17.75f*60, 370), false, buttonBlue, new Vec2(17.75f*60, 150));
         blank.AddChild(doorBlue);
         rigidBodies.Add(doorBlue);
-        //door5.SetColor(1f, 0, 0.1f);
+        
 
-        Door doorOrange = new Door("orangeDoor.png", 1, 1, new Vec2(800, 150), false, buttonOrange, new Vec2(800, 370));
+        Door doorOrange = new Door("orangeDoor.png", 1, 1, new Vec2(16*60, 150), false, buttonOrange, new Vec2(16*60, 370));
         blank.AddChild(doorOrange);
         rigidBodies.Add(doorOrange);
-        //doorOrange.SetColor(0, 0, 1);
+        
 
 
-        Fan fanGreen = new Fan("greenFan.png", 1, 1, new Vec2(1400, 1010), false, buttonGreen);
+        Fan fanGreen = new Fan("greenFan.png", 1, 1, new Vec2(24.5f*60, 16*60), false, buttonGreen);
         AddChild(fanGreen);
-        //fan.SetColor(0.8f, 0.1f, 0.8f);
+        
 
-        Fan fanPink = new Fan("pinkFan.png", 1, 1, new Vec2(1635, 335), true, buttonPink);
+        Fan fanPink = new Fan("pinkFan.png", 1, 1, new Vec2(25.8f*60, 356), true, buttonPink);
         AddChild(fanPink);
-        //fan1.SetColor(1f, 0.6f, 0f);
+        
 
-        RigidBody box = new RigidBody("crate.png", 1, 1, new Vec2(250, 790), true);
+        RigidBody box = new RigidBody("crate.png", 1, 1, new Vec2(4.5f*60, 13.5f*60), true);
         AddChild(box);
         rigidBodies.Add(box);
         box.isPushable = true;
         box.scale = 0.49f;
-        //box.SetColor(0.522f,0.42f,0.024f);
+        
 
-        RigidBody box1 = new RigidBody("crate.png", 1, 1, new Vec2(800, 1030), true);
+        RigidBody box1 = new RigidBody("crate.png", 1, 1, new Vec2(15*60, 16.5f*60), true);
         AddChild(box1);
         rigidBodies.Add(box1);
         box1.isPushable = true;
         box1.scale = 0.49f;
-        //box1.SetColor(0.522f, 0.42f, 0.024f);
+        
 
         /*
         RigidBody box2 = new RigidBody("square.png", 1, 1, new Vec2(1500, 990), true);
@@ -258,33 +254,34 @@ public class MyGame : Game
         box2.SetColor(0.522f, 0.42f, 0.024f);
         */
 
-        RigidBody box3 = new RigidBody("crate.png", 1, 1, new Vec2(1600, 1030), true);
+        RigidBody box3 = new RigidBody("crate.png", 1, 1, new Vec2(24*60, 600), true);
         AddChild(box3);
         rigidBodies.Add(box3);
         box3.isPushable = true;
         box3.scale = 0.49f;
         //box3.SetColor(0.522f, 0.42f, 0.024f);
 
-        RigidBody box4 = new RigidBody("crate.png", 1, 1, new Vec2(1550, 550), true);
+        RigidBody box4 = new RigidBody("crate.png", 1, 1, new Vec2(26*60, 16.5f*60), true);
         AddChild(box4);
         rigidBodies.Add(box4);
         box4.isPushable = true;
         box4.scale = 0.49f;
         //box4.SetColor(0.522f, 0.42f, 0.024f);
 
-        RigidBody box5 = new RigidBody("crate.png", 1, 1, new Vec2(1380, 150), true);
+        RigidBody box5 = new RigidBody("crate.png", 1, 1, new Vec2(25*60, 180), true);
         AddChild(box5);
         rigidBodies.Add(box5);
         box5.isPushable = true;
         box5.scale = 0.49f;
         //box5.SetColor(0.522f, 0.42f, 0.024f);
 
-        Player player = new Player("candle.png", 7, 7, new Vec2(80, 790), true);
+        Player player = new Player("candle.png", 7, 7, new Vec2(120, 770), true);
         AddChild(player);
         rigidBodies.Add(player);
 
-        water = new AnimationSprite("square.png", 1, 1);
+        water = new AnimationSprite("water.png", 2, 2);
         AddChild(water);
+        water.SetCycle(0, 4, 15);
         water.alpha = 0.3f;
         water.x = -50;
         water.y = height - 20;
@@ -404,6 +401,8 @@ public class MyGame : Game
             movingUp = false; movingDown = false;
             lowerSFX.IsPaused = true; raiseSFX.IsPaused = true;
         }
+
+        water.Animate();
     }
 
     static void Main()                          // Main() is the first method that's called when the program is run
