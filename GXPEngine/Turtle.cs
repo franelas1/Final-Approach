@@ -8,12 +8,16 @@ using GXPEngine;
 
 public class Turtle : RigidBody
 {
-
+    SoundChannel turtleSFX;
     
     public Turtle(string filename, int cols, int rows, Vec2 pos, bool moving, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, keepInCache, addCollider)
     {
         isTurtle = true;
         SetScaleXY(2,0.5f);
+
+        turtleSFX = new Sound("sfx/26.wav", true).Play();
+        turtleSFX.IsPaused = true;
+        myGame.soundChannels.Add(turtleSFX);
     }
 
     public void Update()
@@ -28,11 +32,13 @@ public class Turtle : RigidBody
 
         if (inWater) 
         {
-            Console.WriteLine(flipped);
+            turtleSFX.IsPaused = false;
+            
             if (!flipped)
             {
                 Mirror(false, false);
                 velocity.SetXY(2.3f, velocity.y);
+                
             }
 
             else
@@ -42,7 +48,7 @@ public class Turtle : RigidBody
             }
             
         }
-        else { velocity.SetXY(0,velocity.y); }
+        else { velocity.SetXY(0,velocity.y); turtleSFX.IsPaused = true; }
     }
 }
 

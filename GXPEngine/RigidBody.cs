@@ -1,5 +1,5 @@
+using System;
 using GXPEngine;
-using System.Diagnostics.Eventing.Reader;
 
 public class RigidBody : AnimationSprite
 {
@@ -24,11 +24,20 @@ public class RigidBody : AnimationSprite
     public bool inWater = false;
     public bool flipped = false;
     public bool grounded;
+    public bool isPushing;
     public float top;
     public float bottom;
     public float left;
     public float right;
     public bool inBell = false;
+
+    public Sound landSFX = new Sound("sfx/3.wav");
+    public Sound landBoxSFX = new Sound("sfx/15.wav");
+    public Sound splashSFX = new Sound("sfx/8.wav");
+
+    public SoundChannel pushSFX;
+
+    public bool splashed = false;
 
 
     public bool onBox = false;
@@ -39,6 +48,10 @@ public class RigidBody : AnimationSprite
         SetOrigin(width / 2, height / 2);
         position = pos;
         velocity = new Vec2(0, 0);
+
+        pushSFX = new Sound("sfx/20.wav", true).Play();
+        pushSFX.IsPaused = true;
+        myGame.soundChannels.Add(pushSFX);
 
         this.moving = moving;
     }
@@ -62,17 +75,24 @@ public class RigidBody : AnimationSprite
         {
 
             acceleration.y = gravity;
-            if ((onBox || (!isPlayer &&  y >= myGame.water.y)) && !inBell)
+            if ((onBox || (!isPlayer && y >= myGame.water.y)) && !inBell)
             {
                 inWater = true;
                 acceleration.SetXY(acceleration.x, 0);
 
                 if (!belowPlayer)
                 {
-                    if (velocity.y > 0.23 && !isTurtle) { acceleration.SetXY(acceleration.x, velocity.y * -0.23f); }
+                    if (velocity.y > 0.23 && !isTurtle)
+                    {
+                        acceleration.SetXY(acceleration.x, velocity.y * -0.23f);
+                    }
                     else if (y - myGame.water.y > -5 && !isTurtle)
                     {
+                        if (!splashed && isPushable)
+                            splashSFX.Play();
+                        splashed = true;
                         acceleration.SetXY(acceleration.x, -0.115f);
+
                     }
                     else if (onBox)
                     {
@@ -81,7 +101,7 @@ public class RigidBody : AnimationSprite
                             velocity.x = bcb.velocity.x * 1.05f;
                         }
 
-                        
+
 
                         if (Input.GetKey(Key.DOWN))
                         {
@@ -95,9 +115,9 @@ public class RigidBody : AnimationSprite
                             velocity.x = bcb.velocity.x * 1.75f;
 
                         }
-                         
-                        
-                        
+
+
+
 
                     }
                 }
@@ -110,7 +130,12 @@ public class RigidBody : AnimationSprite
                 }
             }
 
+            if (isPushing)
+            {
+                pushSFX.IsPaused = false;
 
+            }
+            else pushSFX.IsPaused = true;
             if (acceleration.x == 0)
             {
                 acceleration.x = -velocity.x / 5;
@@ -221,7 +246,7 @@ public class RigidBody : AnimationSprite
 
                 if (other.isPushable || other.isTurtle)
                 {
-                    
+
                     if (bcb != other)
                     {
                         if (bcb != null)
@@ -232,7 +257,7 @@ public class RigidBody : AnimationSprite
                     velocity.y = 0;
                 }
 
-                
+
 
 
 
@@ -252,6 +277,10 @@ public class RigidBody : AnimationSprite
             }
             if (other.top < sim.y + (height / 2) + 10 && other.left < right && other.right > left && other.bottom > top)
             {
+                if (!grounded)
+                    if (isPlayer)
+                        landSFX.Play();
+                    else if (isPushable) landBoxSFX.Play();
                 grounded = true;
             }
 
@@ -315,13 +344,27 @@ public class RigidBody : AnimationSprite
 
             }
 
+            if (Input.GetKey(Key.A) || Input.GetKey(Key.D))
+            {
+                if (other.isPushable && (left - 3 <= other.right && right > other.right) &&
+                    ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
+                   && (isPlayer) && Input.GetKey(Key.A))
+                {
+                    isPushing = true;
+                    other.acceleration.x = acceleration.x * 4;
+                }
+                else if (other.isPushable && (right + 3 >= other.left && left < other.left) &&
+                    ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
+                   && (isPlayer) && Input.GetKey(Key.D))
+                {
+                    isPushing = true;
+                    other.acceleration.x = acceleration.x * 4;
+                }
 
-            if (other.isPushable && (left - 3 <= other.right && right > other.right) &&
-                ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
-               && (isPlayer) && ((Input.GetKey(Key.LEFT)) || Input.GetKey(Key.A))) other.acceleration.x = acceleration.x * 4;
-            else if (other.isPushable && (right + 3 >= other.left && left < other.left) &&
-                ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
-               && (isPlayer) && ((Input.GetKey(Key.RIGHT)) || Input.GetKey(Key.D))) other.acceleration.x = acceleration.x * 4;
+                Console.WriteLine(isPushing);
+            }
+            else isPushing = false;
+
 
 
             if ((other.isPushable || other.isTurtle) && other.bottom >= myGame.water.y && ((other.left < left && other.right > left) || (other.right > right && other.left < right) || (other.left > left && other.right < right)) && (bottom - 4 < other.top && bottom + 4 > other.top) && isPlayer && bc && bcb == other) { onBox = true; position.y = other.top - (height / 2); }

@@ -1,43 +1,60 @@
-using System;                                   // System contains a lot of default C# libraries 
 using GXPEngine;                                // GXPEngine contains the engine
-using System.Drawing;
 using System.Collections.Generic;
-using TiledMapParser;                           // System.Drawing contains drawing tools such as Color definitions
 
-public class MyGame : Game {
+public class MyGame : Game
+{
 
-	public List<RigidBody> rigidBodies = new List<RigidBody>();
+    public List<RigidBody> rigidBodies = new List<RigidBody>();
     public List<Sprite> divingBells = new List<Sprite>();
+    public List<SoundChannel> soundChannels = new List<SoundChannel>();
+
     public int currentLevel;
     public float waterSpeed = 2f;
-	public AnimationSprite water;
+    public AnimationSprite water;
+    public bool movingUp = false;
+    public bool movingDown = false;
+
+    public SoundChannel ambientSFX;
+    public SoundChannel raiseSFX;
+    public SoundChannel lowerSFX;
+
     public MyGame() : base(1920, 1080, false, false)     // Create a window that's 800x600 and NOT fullscreen
-	{
+    {
         LoadLevel1();
-		
+
     }
-	// For every game object, Update is called every frame, by the engine:
-	void Update() 
-	{
-		WaterControls();
-        if (Input.GetKeyDown(Key.ZERO)) { currentLevel = 0; Reload();  }
-        if (Input.GetKeyDown(Key.ONE)) { currentLevel = 1; Reload();  }
+    // For every game object, Update is called every frame, by the engine:
+    void Update()
+    {
+        WaterControls();
+        if (Input.GetKeyDown(Key.ZERO)) { currentLevel = 0; Reload(); }
+        if (Input.GetKeyDown(Key.ONE)) { currentLevel = 1; Reload(); }
     }
 
-    public void Reload() 
+    public void Reload()
     {
+
+        foreach (SoundChannel channel in soundChannels)
+        {
+
+            channel.Stop();
+
+        }
+        soundChannels.Clear();
         rigidBodies.Clear();
         divingBells.Clear();
-       foreach (GameObject o in GetChildren())
+        foreach (GameObject o in GetChildren())
         {
             o.LateDestroy();
         }
 
-       switch (currentLevel) 
+        
+
+        switch (currentLevel)
         {
             case 0:
                 LoadDemo(); break;
-                case 1:
+            case 1:
                 LoadLevel1(); break;
             default:
                 break;
@@ -45,6 +62,18 @@ public class MyGame : Game {
     }
     void LoadLevel1()
     {
+        ambientSFX = new Sound("sfx/17.wav", true, true).Play();
+        soundChannels.Add(ambientSFX);
+
+        lowerSFX = new Sound("sfx/24.wav", true).Play();
+        lowerSFX.IsPaused = true;
+        soundChannels.Add(lowerSFX);
+
+
+        raiseSFX = new Sound("sfx/23.wav", true).Play();
+        raiseSFX.IsPaused = true;
+        soundChannels.Add(raiseSFX);
+
         currentLevel = 1;
 
         Sprite bg = new Sprite("background.png");
@@ -60,7 +89,7 @@ public class MyGame : Game {
         Sprite blank = new Sprite("square.png");
         AddChild(blank);
         blank.alpha = 0f;
-        
+
 
         RigidBody wall = new RigidBody("square.png", 1, 1, new Vec2(width, height / 2), false);
         AddChild(wall);
@@ -133,7 +162,7 @@ public class MyGame : Game {
 
         Button button = new Button("checkers.png", 1, 1, new Vec2(250, 880));
         AddChild(button);
-        button.SetColor(0.1f,0.6f,0.1f);
+        button.SetColor(0.1f, 0.6f, 0.1f);
 
         Button button1 = new Button("checkers.png", 1, 1, new Vec2(800, 940));
         AddChild(button1);
@@ -174,17 +203,19 @@ public class MyGame : Game {
         rigidBodies.Add(door2);
         door2.SetColor(1f, 1f, 0);
 
-        Door door3 = new Door("wallTurn.png", 1, 1, new Vec2(1220, 500), false, button5, new Vec2(1500, 500));
+        Door door3 = new Door("wall.png", 1, 1, new Vec2(1220, 500), false, button5, new Vec2(1500, 500));
         blank.AddChild(door3);
         rigidBodies.Add(door3);
         door3.SetColor(1f, 0.6f, 0f);
-        
+        door3.SetScaleXY(4, 0.5f);
 
-        Door door4 = new Door("wallTurn.png", 1, 1, new Vec2(1500, 380), false, button6, new Vec2(1220, 380));
+
+        Door door4 = new Door("wall.png", 1, 1, new Vec2(1500, 380), false, button6, new Vec2(1220, 380));
         blank.AddChild(door4);
         rigidBodies.Add(door4);
         door4.SetColor(0.4f, 0.8f, 0.6f);
-        
+        door4.SetScaleXY(4, 0.5f);
+
 
         Door door5 = new Door("wall.png", 1, 1, new Vec2(1000, 370), false, button3, new Vec2(1000, 150));
         blank.AddChild(door5);
@@ -210,7 +241,7 @@ public class MyGame : Game {
         rigidBodies.Add(box);
         box.isPushable = true;
         box.scale = 0.99f;
-        box.SetColor(0.522f,0.42f,0.024f);
+        box.SetColor(0.522f, 0.42f, 0.024f);
 
         RigidBody box1 = new RigidBody("square.png", 1, 1, new Vec2(800, 1030), true);
         AddChild(box1);
@@ -302,9 +333,9 @@ public class MyGame : Game {
         Fan fan = new Fan("fan.png", 1, 1, new Vec2(100, 800), false, button);
         AddChild(fan);
 
-       /* Door door = new Door("wall.png", 1, 1, new Vec2(800, 700), false, button1, new Vec2(800, 700));
-        AddChild(door);
-        rigidBodies.Add(door);*/
+        /* Door door = new Door("wall.png", 1, 1, new Vec2(800, 700), false, button1, new Vec2(800, 700));
+         AddChild(door);
+         rigidBodies.Add(door);*/
 
         Turtle turtle = new Turtle("colors.png", 1, 1, new Vec2(600, 500), true);
         AddChild(turtle);
@@ -341,22 +372,38 @@ public class MyGame : Game {
     }
 
     void WaterControls()
-	{
+    {
         if (Input.GetKey(Key.DOWN))
         {
-            
+            if (!movingDown)
+            {
+                
+                lowerSFX.IsPaused = false;
+            }
+            movingDown = true;
             water.y += waterSpeed;
             if (water.y > height)
-            water.y = height;
+                water.y = height;
         }
-        if (Input.GetKey(Key.UP))
+        else if (Input.GetKey(Key.UP))
         {
+            if (!movingUp)
+            {
+                
+                raiseSFX.IsPaused = false;
+            }
+            movingUp = true;
             water.y -= waterSpeed;
+        }
+        else
+        {
+            movingUp = false; movingDown = false;
+            lowerSFX.IsPaused = true; raiseSFX.IsPaused = true;
         }
     }
 
     static void Main()                          // Main() is the first method that's called when the program is run
-	{
-		new MyGame().Start();                   // Create a "MyGame" and start it
-	}
+    {
+        new MyGame().Start();                   // Create a "MyGame" and start it
+    }
 }

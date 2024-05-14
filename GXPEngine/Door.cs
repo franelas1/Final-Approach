@@ -10,6 +10,7 @@ using GXPEngine;
 public class Door : RigidBody
 {
     bool active;
+    bool switched = false;
     Button button;
    
     Vec2 origin;
@@ -17,6 +18,7 @@ public class Door : RigidBody
     Vec2 target;
     float moveSpeed = 4f;
 
+    Sound moveSFX = new Sound("sfx/11.wav");
 
     public Door(string filename, int cols, int rows, Vec2 pos, bool moving, Button button, Vec2 target, int rotation = 0, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, keepInCache, addCollider)
     {
@@ -27,7 +29,7 @@ public class Door : RigidBody
         this.target = target;
         this.rotation = rotation;
 
-        
+        SetScaleXY(0.5f, 4);
     }
 
     void MoveToTarget() 
@@ -53,10 +55,20 @@ public class Door : RigidBody
 
         if(button.isActivated)
         {
+            if (!switched)
+            {
+                moveSFX.Play();
+                switched = true;
+            }
             active = true;
         }
         else
         {
+            if (switched)
+            {
+                moveSFX.Play();
+                switched = false;
+            }
             active = false;
         }
 
