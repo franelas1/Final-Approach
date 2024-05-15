@@ -26,6 +26,7 @@ public class RigidBody : AnimationSprite
     public bool grounded;
     public bool isPushing;
     public bool isWalling;
+    public bool pushed;
     public float top;
     public float bottom;
     public float left;
@@ -108,7 +109,7 @@ public class RigidBody : AnimationSprite
                         splashed = true;
                         acceleration.SetXY(acceleration.x, -0.115f);
                     }
-                    else if (onBox)
+                    else if (onBox && !pushed)
                     {
 
                         Console.WriteLine(isPushable);
@@ -138,20 +139,21 @@ public class RigidBody : AnimationSprite
                             if (Input.GetKey(Key.DOWN))
                             {
                                 velocity.y = Mathf.Max(1, myGame.water.y - bcb.y);
-                                velocity.x = bcb.velocity.x *1.15f;
+                                velocity.x = bcb.velocity.x * 1.17f;
                             }
 
                             else if (Input.GetKey(Key.UP))
                             {
 
                                 velocity.y = -2.7f * myGame.waterSpeed;
-                                velocity.x = bcb.velocity.x * 3f;
+                                velocity.x = bcb.velocity.x * 4f;
                             }
                             else
                             {
                                 velocity.y = 0.1f;
                                 velocity.x = bcb.velocity.x;
                             }
+                            
                         }
 
                     }
@@ -218,37 +220,37 @@ public class RigidBody : AnimationSprite
         
     }
 
-    /*public void SolveIntersections()
+    public void SolveIntersections()
     {
-        int closest = 0;
+        
         foreach (RigidBody other in myGame.rigidBodies)
         {
-            if (other.top > top && other.left <= left && other.right >= right && other.top < bottom)
+            if ((isPlayer || isPushable) && other.top < bottom && other.top > top && other.left < right && other.right > right)
             {
                 position.y = other.top - (height / 2);
                 acceleration.y = 0;
                 velocity.y = 0;
             }
-            if (other.top <= top && other.right < right && other.right > left && other.bottom >= bottom)
+            if ((isPlayer || isPushable) && other.top < bottom && other.top > top && other.right < right && other.right > left)
             {
-                position.x = other.right + (width / 2);
-                acceleration.x = 0;
-                velocity.x = 0;
-            }
-            if (other.top < top && other.left <= left && other.right >= left && other.bottom > top)
-            {
-                position.y = other.bottom + (height / 2);
-                    acceleration.y = 0;
+                position.y = other.top - (height / 2);
+                acceleration.y = 0;
                 velocity.y = 0;
             }
-            if (other.top <= bottom && other.left < right && other.right > right && other.bottom >= bottom)
+            if ((isPlayer || isPushable) && other.bottom > top && other.bottom < bottom && other.left < right && other.right > right)
             {
-                position.x = other.x - other.width;
-                acceleration.x = 0;
-                velocity.x = 0;
+                position.y = other.bottom + (height / 2);
+                acceleration.y = 0;
+                velocity.y = 0;
+            }
+            if ((isPlayer || isPushable) && other.bottom > top && other.bottom < bottom && other.right < right && other.right > left)
+            {
+                position.y = other.bottom + (height / 2);
+                acceleration.y = 0;
+                velocity.y = 0;
             }
         }
-    } */
+    } 
 
     public bool CheckCollisions()
     {
@@ -268,7 +270,7 @@ public class RigidBody : AnimationSprite
 
         foreach (RigidBody other in myGame.rigidBodies)
         {
-            
+            SolveIntersections();
             if (other == this || (!other.moving && !moving)) continue;
 
             if (other.top < sim.y + (height / 2) && other.left < right && other.right > left && other.bottom > top)
@@ -398,6 +400,7 @@ public class RigidBody : AnimationSprite
 
 
             }
+            other.pushed = false;
             if (Input.GetKey(Key.A) && Input.GetKey(Key.D)) isPushing = false;
 
             else if (Input.GetKey(Key.A) || Input.GetKey(Key.D))
@@ -408,6 +411,7 @@ public class RigidBody : AnimationSprite
                 {
                     isPushing = true;
                     other.acceleration.x = velocity.x * 4;
+                    other.pushed = true;
                 }
                 else if (other.isPushable && (right + 3 >= other.left && left < other.left) &&
                     ((bottom > other.top && top < other.top) || (top < other.bottom && bottom > other.bottom))
@@ -415,11 +419,12 @@ public class RigidBody : AnimationSprite
                 {
                     isPushing = true;
                     other.acceleration.x = velocity.x * 4;
+                    other.pushed = true;
                 }
 
-
+                
             }
-            else isPushing = false;
+            else isPushing = false; 
 
 
 

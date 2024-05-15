@@ -9,7 +9,7 @@ public class Player : RigidBody
     bool deathPlayed = false;
     private bool turnedRight = true;
     private SoundChannel deathSFX;
-    //private Sound walkSFX = new Sound("sfx/1.wav");
+    private Sound walkSFX = new Sound("sfx/1.wav");
     private SoundChannel airSFX;
     
     private float jumpForce = 12f;
@@ -58,7 +58,7 @@ public class Player : RigidBody
                 turnedRight = false;
                 if (!walking)
                 {
-                    //walkSFX.Play();
+                    walkSFX.Play();
                 }
                 walking = true;
                 acceleration.SetXY(-0.23f, acceleration.y);
@@ -68,7 +68,7 @@ public class Player : RigidBody
                 turnedRight = true;
                 if (!walking)
                 {
-                    //walkSFX.Play();
+                    walkSFX.Play();
                 }
                 walking = true;
                 acceleration.SetXY(0.23f, acceleration.y);
@@ -84,6 +84,7 @@ public class Player : RigidBody
                 velocity.SetXY(velocity.x, -jumpForce);
                 grounded = false;
                 isPushing = false;
+                walkSFX.Play();
             }
 
             foreach (Sprite other in myGame.divingBells)
@@ -102,7 +103,7 @@ public class Player : RigidBody
                     }
                 }
             }
-            /*if (y > myGame.water.y && !inBell) Death();*/
+            if (y > myGame.water.y && !inBell) Death();
         }
 
         
@@ -154,6 +155,7 @@ public class Player : RigidBody
             else if (velocity.y > 1f)
             {
                 SetCycle(20, 3, 5);
+                isPushing = false;
             }
         }
 
@@ -169,6 +171,7 @@ public class Player : RigidBody
         else if (velocity.y > 4f)
         {
             SetCycle(20, 3, 5);
+            
         }
 
         else
