@@ -115,7 +115,7 @@ public class MyGame : Game
         floor1.scaleX = 4;
         floor1.followMouse = false;
 
-        Button buttonRed = new Button("redButton.png", 1, 1, new Vec2(500, 840));
+        Button buttonRed = new Button("colors/redButton.png", 1, 1, new Vec2(500, 840));
         AddChild(buttonRed);
 
         Turtle turtle = new Turtle("tutel.png", 1, 1, new Vec2(600, 700), true);
@@ -135,14 +135,8 @@ public class MyGame : Game
         water.width = width + 100;
         water.height = height;
 
-        /*Sprite bell = new Sprite("wall.png");
-        AddChild(bell);
-        bell.SetOrigin(bell.width / 2, bell.height / 2);
-        bell.SetXY(1200, 700);
-        bell.SetScaleXY(5);
-        bell.SetColor(1, 1, 0);
-        bell.alpha = 0.5f;
-        divingBells.Add(bell);*/
+        AddChild(winScreen);
+        winScreen.scale = 0.25f;
     }
     void LoadLevel1()
     {
@@ -275,7 +269,7 @@ public class MyGame : Game
         blank.AddChild(doorPurple);
         rigidBodies.Add(doorPurple);
 
-        Door doorRed1 = new Door("redDoor.png", 1, 1, new Vec2(17f*60, 13*60), false, buttonRed, new Vec2(17f * 60, 16 * 60));
+        Door doorRed1 = new Door("colors/redDoor.png", 1, 1, new Vec2(17f*60, 13*60), false, buttonRed, new Vec2(17f * 60, 16 * 60));
         blank.AddChild(doorRed1);
         rigidBodies.Add(doorRed1);
 
@@ -295,7 +289,7 @@ public class MyGame : Game
         blank.AddChild(doorBlue);
         rigidBodies.Add(doorBlue);
 
-        Door doorOrange = new Door("orangeDoor.png", 1, 1, new Vec2(16*60 - 10, 150), false, buttonOrange, new Vec2(16*60 - 10, 370));
+        Door doorOrange = new Door("colors/orangeDoor.png", 1, 1, new Vec2(16*60 - 10, 150), false, buttonOrange, new Vec2(16*60 - 10, 370));
         blank.AddChild(doorOrange);
         rigidBodies.Add(doorOrange);
 
@@ -644,6 +638,9 @@ public class MyGame : Game
         water.y = height - 20;
         water.width = width + 100;
         water.height = height;
+
+        AddChild(winScreen);
+        winScreen.scale = 0.25f;
     }
 
     void LoadLevel3()
@@ -718,7 +715,6 @@ public class MyGame : Game
 
         AddChild(winScreen);
         winScreen.scale = 0.25f;
-
     }
 
     void BackgroundUpdate()
