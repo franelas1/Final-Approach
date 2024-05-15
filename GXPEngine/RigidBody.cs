@@ -82,13 +82,13 @@ public class RigidBody : AnimationSprite
             acceleration.y = gravity;
             if (bcb != null)
             {
-                if (bcb.onBox)
+                /*if (bcb.onBox)
                 {
                     bcb = null;
-                }
+                }*/
             }
 
-            if ((onBox || (!onBox && y >= myGame.water.y)) && !inBell)
+            if ((onBox || ((!onBox && y >= myGame.water.y)) && ((!inBell && isPlayer) || !isPlayer)))
             {
                 if(isPushable)
                 Console.WriteLine(isPushable);
@@ -118,7 +118,7 @@ public class RigidBody : AnimationSprite
                         {
                             if (!Input.GetKey(Key.A) && !Input.GetKey(Key.D))
                             {
-                                velocity.y = 0.1f;
+                                /*velocity.y = 0.1f;*/
                                 velocity.x = bcb.velocity.x /** 1.05f*/;
                             }
 
@@ -146,7 +146,7 @@ public class RigidBody : AnimationSprite
                             {
 
                                 velocity.y = -2.7f * myGame.waterSpeed;
-                                velocity.x = bcb.velocity.x * 4f;
+                                velocity.x = bcb.velocity.x * 5f;
                             }
                             else
                             {
@@ -309,7 +309,7 @@ public class RigidBody : AnimationSprite
                 else
                 {
                     velocity.y = -velocity.y * bounciness;
-                    if (bcb != null)
+                    if (bcb != null && isTurtle)
                     {
                         bcb.belowPlayer = false;
                         bcb = null;
@@ -410,7 +410,7 @@ public class RigidBody : AnimationSprite
                    && (isPlayer) && Input.GetKey(Key.A))
                 {
                     isPushing = true;
-                    other.acceleration.x = velocity.x * 4;
+                    other.acceleration.x = (velocity.x * 4) -1;
                     other.pushed = true;
                 }
                 else if (other.isPushable && (right + 3 >= other.left && left < other.left) &&
@@ -418,7 +418,7 @@ public class RigidBody : AnimationSprite
                    && (isPlayer) && Input.GetKey(Key.D))
                 {
                     isPushing = true;
-                    other.acceleration.x = velocity.x * 4;
+                    other.acceleration.x = (velocity.x * 4) +1;
                     other.pushed = true;
                 }
 

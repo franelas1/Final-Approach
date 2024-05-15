@@ -1,4 +1,5 @@
 using GXPEngine;                                // GXPEngine contains the engine
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -9,6 +10,8 @@ public class MyGame : Game
     public List<Sprite> divingBells = new List<Sprite>();
     public List<SoundChannel> soundChannels = new List<SoundChannel>();
     Sprite bg;
+
+    public Sprite winScreen;
     public Player player;
     public int currentLevel;
     public float waterSpeed = 2f;
@@ -22,6 +25,9 @@ public class MyGame : Game
 
     public MyGame() : base(1920, 1080, false, false)     // Create a window that's 800x600 and NOT fullscreen
     {
+        winScreen = new Sprite("winScreen.png");
+        winScreen.SetOrigin(winScreen.width / 2 + 30, winScreen.height / 2 + 50);
+        
         LoadLevel1();
 
     }
@@ -32,11 +38,12 @@ public class MyGame : Game
         WaterControls();
         if (Input.GetKeyDown(Key.ZERO)) { currentLevel = 0; Reload(); }
         if (Input.GetKeyDown(Key.ONE)) { currentLevel = 1; Reload(); }
+        if (Input.GetKeyDown(Key.R)) { Reload(); }
     }
 
     public void Reload()
     {
-
+        player.Death();
         foreach (SoundChannel channel in soundChannels)
         {
 
@@ -48,10 +55,20 @@ public class MyGame : Game
         divingBells.Clear();
         foreach (GameObject o in GetChildren())
         {
-            o.LateDestroy();
+            RemoveChild(o);
+            if (!o.Equals(winScreen))
+            {
+                o.Destroy();
+                
+            }
+            
         }
 
+
+
         
+        
+
 
         switch (currentLevel)
         {
@@ -62,6 +79,11 @@ public class MyGame : Game
             default:
                 break;
         }
+
+        
+
+        
+
     }
     void LoadLevel1()
     {
@@ -196,7 +218,7 @@ public class MyGame : Game
         rigidBodies.Add(doorPurple);
         
 
-        Door doorRed1 = new Door("redDoor.png", 1, 1, new Vec2(17.25f*60, 13*60), false, buttonRed, new Vec2(17.25f * 60, 16 * 60));
+        Door doorRed1 = new Door("redDoor.png", 1, 1, new Vec2(17f*60, 13*60), false, buttonRed, new Vec2(17f * 60, 16 * 60));
         blank.AddChild(doorRed1);
         rigidBodies.Add(doorRed1);
         
@@ -223,7 +245,7 @@ public class MyGame : Game
         rigidBodies.Add(doorBlue);
         
 
-        Door doorOrange = new Door("orangeDoor.png", 1, 1, new Vec2(16*60, 150), false, buttonOrange, new Vec2(16*60, 370));
+        Door doorOrange = new Door("orangeDoor.png", 1, 1, new Vec2(16*60 - 10, 150), false, buttonOrange, new Vec2(16*60 - 10, 370));
         blank.AddChild(doorOrange);
         rigidBodies.Add(doorOrange);
         
@@ -290,9 +312,13 @@ public class MyGame : Game
         water.SetCycle(0, 4, 15);
         water.alpha = 0.3f;
         water.x = -50;
-        water.y = height - 20;
+        water.y = height - 70;
         water.width = width + 100;
         water.height = height;
+
+        AddChild(winScreen);
+        winScreen.scale = 0.25f;
+
     }
     void LoadDemo()
     {
@@ -380,6 +406,10 @@ public class MyGame : Game
         water.y = height - 100;
         water.width = width + 100;
         water.height = height;
+
+        AddChild(winScreen);
+        winScreen.scale = 0.25f;
+
     }
 
     void BackgroundUpdate()

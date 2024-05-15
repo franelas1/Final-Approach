@@ -7,6 +7,7 @@ public class Player : RigidBody
     bool won = false;
     bool walking = false;
     bool deathPlayed = false;
+    bool levelStart = false;
     private bool turnedRight = true;
     private SoundChannel deathSFX;
     private Sound walkSFX = new Sound("sfx/1.wav");
@@ -26,11 +27,19 @@ public class Player : RigidBody
     public void Update()
     {
         isWalling = false;
-
+        myGame.winScreen.SetXY(x, y);
+        
         base.Update();
 
         inBell = false;
-        
+        if (!deathPlayed)
+        {
+            if (myGame.winScreen.scale <= 35)
+            {
+                myGame.winScreen.scale += .25f;
+            }
+            if (myGame.winScreen.scale > 10) levelStart = true;
+        }
         
         
         if (!grounded)
@@ -45,7 +54,7 @@ public class Player : RigidBody
 
         }
 
-        if (!deathPlayed)
+        if (!deathPlayed && !won && levelStart)
         {
             if (Input.GetKey(Key.A) && Input.GetKey(Key.D))
             {
@@ -99,6 +108,7 @@ public class Player : RigidBody
                     }
                     else
                     {
+                        
                         won = true;
                     }
                 }
@@ -106,24 +116,29 @@ public class Player : RigidBody
             if (y > myGame.water.y && !inBell) Death();
         }
 
-        
-
-        if (deathSFX != null)
+        if(deathPlayed)
         {
-            if (!deathSFX.IsPlaying && deathPlayed)
+            if (myGame.winScreen.scale > 1f)
+            myGame.winScreen.scale -= 0.25f;
+            else
             {
 
                 myGame.Reload();
             }
         }
 
+
         if (won)
         {
-            myGame.currentLevel++;
-            myGame.Reload();
+            myGame.winScreen.scale -= 0.25f;
+            if (myGame.winScreen.scaleX == 0.5f)
+            {
+                myGame.currentLevel++;
+                myGame.Reload();
+            }
         }
         DirectionSetter(turnedRight);
-        Animation(walking, grounded, (isPushing || isWalling));
+        Animation(walking, grounded, (isPushing || isWalling), deathPlayed);
     }
 
     public void Death()
@@ -138,11 +153,22 @@ public class Player : RigidBody
 
     }
 
-    void Animation(bool walking_temp, bool grounded_temp, bool isPushing_temp)
+    void Animation(bool walking_temp, bool grounded_temp, bool isPushing_temp, bool deathPlayed_temp)
     {
         
 
-        if (!grounded_temp)
+        if (deathPlayed) 
+        {
+            
+            if (currentFrame == 46)
+            {
+                SetCycle(46, 1, 5);
+            }
+            else
+            SetCycle(35, 14, 5);
+        }
+
+        else if (!grounded_temp)
         {
             if(velocity.y < -1f)
             {

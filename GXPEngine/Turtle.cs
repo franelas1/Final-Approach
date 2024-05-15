@@ -30,7 +30,7 @@ public class Turtle : RigidBody
             inWater = true;
         }
 
-        if (inWater) 
+        if (inWater && y < myGame.water.y + 5) 
         {
             turtleSFX.IsPaused = false;
             
