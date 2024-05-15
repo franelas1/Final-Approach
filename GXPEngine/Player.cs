@@ -199,7 +199,6 @@ public class Player : RigidBody
             SetCycle(20, 3, 5);
             
         }
-
         else
         {
             SetCycle(0, 6, 5);
