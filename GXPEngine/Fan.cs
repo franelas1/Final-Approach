@@ -13,6 +13,7 @@ public class Fan : AnimationSprite
     public float bottom;
     public float left;
     public float right;
+    public float blowDistance;
 
     public Vec2 position;
     bool isLeft = false;
@@ -21,11 +22,12 @@ public class Fan : AnimationSprite
     Button button;
     SoundChannel fanSFX;
     
-    public Fan(string filename, int cols, int rows, Vec2 position, bool isLeft, Button button = null, int frames = -1, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, frames, keepInCache, addCollider)
+    public Fan(string filename, int cols, int rows, Vec2 position, bool isLeft, float blowDistance, Button button = null, int frames = -1, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, frames, keepInCache, addCollider)
     {
         myGame = (MyGame)game; 
         this.isLeft = isLeft;
         this.button = button;
+        this.blowDistance = blowDistance;
         
         SetOrigin(width / 2, height / 2);
         SetXY(position.x, position.y);
@@ -83,14 +85,14 @@ public class Fan : AnimationSprite
         {
             if(isLeft)
             {
-                if (other.top > top && other.top < bottom && other.right < left && (other.isPushable /*|| other.isPlayer*/))
+                if (other.top > top && other.top < bottom && other.right < left && other.isPushable && x - other.x < blowDistance)
                 {
                     other.acceleration.SetXY(-0.23f, other.acceleration.y);
                 }
             }
             if(!isLeft)
             {
-                if(other.top > top && other.top < bottom && other.left > right && (other.isPushable /*|| other.isPlayer*/))
+                if(other.top > top && other.top < bottom && other.left > right && other.isPushable && x - other.x > -blowDistance)
                 {
                     other.acceleration.SetXY(0.23f,other.acceleration.y);
                 }

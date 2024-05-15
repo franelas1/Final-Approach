@@ -146,7 +146,6 @@ public class Player : RigidBody
    
         if (deathSFX == null)
         {
-            Console.WriteLine("dead");
             deathSFX = new Sound("sfx/16.wav", false).Play();
             deathPlayed = true;
         }

@@ -91,7 +91,6 @@ public class RigidBody : AnimationSprite
             if ((onBox || ((!onBox && y >= myGame.water.y)) && ((!inBell && isPlayer) || !isPlayer)))
             {
                 if(isPushable)
-                Console.WriteLine(isPushable);
                 inWater = true;
                 acceleration.SetXY(acceleration.x, 0);
                 
@@ -111,9 +110,6 @@ public class RigidBody : AnimationSprite
                     }
                     else if (onBox && !pushed)
                     {
-
-                        Console.WriteLine(isPushable);
-                        Console.WriteLine("buh");
                         if (isPlayer)
                         {
                             if (!Input.GetKey(Key.A) && !Input.GetKey(Key.D))
