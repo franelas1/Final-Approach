@@ -172,7 +172,7 @@ public class Player : RigidBody
     {
         
 
-        if (deathPlayed) 
+        if (deathPlayed_temp) 
         {
             
             if (currentFrame == 46)

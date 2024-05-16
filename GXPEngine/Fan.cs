@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using GXPEngine;
 public class Fan : AnimationSprite
 {
+    AnimationSprite wind = new AnimationSprite("wind.png", 2, 4);
+
     public MyGame myGame;
 
     public float top;
@@ -32,10 +34,10 @@ public class Fan : AnimationSprite
         SetOrigin(width / 2, height / 2);
         SetXY(position.x, position.y);
 
-        
-       
-
         if (isLeft) { Mirror(true, false); }
+
+        wind.SetOrigin(this.width / 2, this.height/2);
+        AddChild(wind);
 
         top = y - height / 2;
         bottom = y + height / 2;
@@ -77,6 +79,7 @@ public class Fan : AnimationSprite
             myGame.soundChannels.Remove(fanSFX);
             switched = false;
         }
+        Wind();
     }
 
     private void CollisionCheck()
@@ -98,6 +101,31 @@ public class Fan : AnimationSprite
                 }
             }
         }
+    }
+
+    private void Wind()
+    {
+        wind.alpha = 0.7f;
+        if(active)
+        {
+            wind.SetCycle(0, 7, 5);
+
+            if (isLeft)
+            {
+                wind.SetXY(-5f * 60, 0);
+                wind.Mirror(true, false);
+            }
+            else
+            {
+                wind.SetXY(1.2f * 60, 0);
+            }
+        }
+        else
+        {
+            wind.SetCycle(7, 1);
+        }
+
+        wind.Animate();
     }
 
 }

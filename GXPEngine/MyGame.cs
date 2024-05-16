@@ -610,8 +610,8 @@ public class MyGame : Game
         blank.AddChild(doorRed2);
         rigidBodies.Add(doorRed2);
 
-        Door doorPurple1 = new Door("colors/purpleDoorHor.png", 1, 1, new Vec2(10.8f * 60, 3.25f * 60), false, buttonPurple, new Vec2(9f * 60, 3.25f * 60));
-        doorPurple1.scaleX = 0.4f;
+        Door doorPurple1 = new Door("colors/purpleDoorHor.png", 1, 1, new Vec2(11f * 60, 3.25f * 60), false, buttonPurple, new Vec2(9f * 60, 3.25f * 60));
+        doorPurple1.scaleX = 0.3f;
         blank.AddChild(doorPurple1);
         rigidBodies.Add(doorPurple1);
 
@@ -619,8 +619,8 @@ public class MyGame : Game
         blank.AddChild(doorPurple2);
         rigidBodies.Add(doorPurple2);
 
-        Door doorWhite1 = new Door("colors/whiteDoorHor.png", 1, 1, new Vec2(11.2f * 60, 3.25f * 60), false, buttonWhite, new Vec2(13f * 60, 3.25f * 60));
-        doorWhite1.scaleX = 0.4f;
+        Door doorWhite1 = new Door("colors/whiteDoorHor.png", 1, 1, new Vec2(11f * 60, 3.25f * 60), false, buttonWhite, new Vec2(13f * 60, 3.25f * 60));
+        doorWhite1.scaleX = 0.3f;
         blank.AddChild(doorWhite1);
         rigidBodies.Add(doorWhite1);
 
@@ -680,12 +680,9 @@ public class MyGame : Game
         box5.scale = 0.49f;
 
 
-        
-
-
         //                                                        ----------PLAYER AND WATER----------
 
-        player = new Player("candle.png", 7, 7, new Vec2(60, 14.1f * 60), true);
+        player = new Player("candle.png", 7, 7, new Vec2(18f* 60, 5f * 60), true); //60, 14.1f * 60
         AddChild(player);
         rigidBodies.Add(player);
 
@@ -881,7 +878,7 @@ public class MyGame : Game
         blank.AddChild(doorYellow1);
         rigidBodies.Add(doorYellow1);
 
-        Door doorYellow2 = new Door("colors/yellowDoorHor.png", 1, 1, new Vec2(23.5f * 60, 8.25f * 60), false, buttonYellow, new Vec2(23.5f * 60, 8.25f * 60));
+        Door doorYellow2 = new Door("colors/yellowDoorHor.png", 1, 1, new Vec2(23.5f * 60, 8.25f * 60), false, buttonYellow, new Vec2(26.5f * 60, 8.25f * 60));
         blank.AddChild(doorYellow2);
         rigidBodies.Add(doorYellow2);
 
