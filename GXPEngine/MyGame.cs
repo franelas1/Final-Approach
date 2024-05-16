@@ -9,9 +9,13 @@ public class MyGame : Game
     public List<Sprite> divingBells = new List<Sprite>();
     public List<SoundChannel> soundChannels = new List<SoundChannel>();
     Sprite bg;
-
+    public AnimationSprite playButton;
+    public AnimationSprite settingsButton;
+    public AnimationSprite exitButton;
+    public bool menu;
     public Sprite winScreen;
     public Player player;
+    public Player player1;
     public int currentLevel;
     public float waterSpeed = 2f;
     public AnimationSprite water;
@@ -19,6 +23,7 @@ public class MyGame : Game
     public bool movingDown = false;
 
     public SoundChannel ambientSFX;
+    public SoundChannel musicSFX;
     public SoundChannel raiseSFX;
     public SoundChannel lowerSFX;
 
@@ -26,29 +31,51 @@ public class MyGame : Game
     {
         winScreen = new Sprite("winScreen.png");
         winScreen.SetOrigin(winScreen.width / 2 + 30, winScreen.height / 2 + 50);
+
+        //sounds
+        ambientSFX = new Sound("sfx/17.wav", true, true).Play();
+        ambientSFX.IsPaused = true;
+
+        musicSFX = new Sound("sfx/27.wav", true, true).Play();
+
+
+        lowerSFX = new Sound("sfx/24.wav", true, true).Play();
+        lowerSFX.IsPaused = true;
         
-        LoadLevel3();
+
+        raiseSFX = new Sound("sfx/23.wav", true, true).Play();
+        raiseSFX.IsPaused = true;
+        
+
+        LoadDemo();
 
     }
     // For every game object, Update is called every frame, by the engine:
     void Update()
     {
         BackgroundUpdate();
-        WaterControls();
+
+        if (currentLevel != 0)
+            WaterControls();
+        else
+        {
+            player.Animate();
+            MenuControls();
+        }
         if (Input.GetKeyDown(Key.ZERO)) { currentLevel = 0; Reload(); }
         if (Input.GetKeyDown(Key.ONE)) { currentLevel = 1; Reload(); }
         if (Input.GetKeyDown(Key.TWO)) { currentLevel = 2; Reload(); }
         if (Input.GetKeyDown(Key.THREE)) { currentLevel = 3; Reload(); }
-        if (Input.GetKeyDown(Key.R)) { Reload(); }
+        if (Input.GetKeyDown(Key.R) && currentLevel != 0) { player.reload = true; }
     }
 
     public void Reload()
     {
-        player.Death();
+        player.deathPlayed = true;
         foreach (SoundChannel channel in soundChannels)
         {
 
-            channel.Stop();
+            channel.IsPaused = true;
 
         }
         soundChannels.Clear();
@@ -60,7 +87,7 @@ public class MyGame : Game
             if (!o.Equals(winScreen))
             {
                 o.Destroy();
-                
+                o.Remove();
             }
             
         }
@@ -86,57 +113,111 @@ public class MyGame : Game
         
 
     }
+
+    void MenuControls()
+    {
+        if (Input.GetKeyDown(Key.SPACE))
+        {
+            if (playButton.currentFrame == 1)
+            {
+                currentLevel = 1;
+                
+                
+            }
+            else if (settingsButton.currentFrame == 1)
+            {
+
+            }
+            else Destroy();
+        }
+
+        if (Input.GetKeyDown(Key.UP))
+        {
+            if (playButton.currentFrame == 1)
+            {
+                playButton.currentFrame = 0;
+                exitButton.currentFrame = 1;
+            }
+            else if (settingsButton.currentFrame == 1)
+            {
+                settingsButton.currentFrame = 0;
+                playButton.currentFrame = 1;
+            }
+            else
+            {
+                exitButton.currentFrame = 0;
+                settingsButton.currentFrame = 1;
+            }
+        }
+
+        if (Input.GetKeyDown(Key.DOWN))
+        {
+            if (playButton.currentFrame == 1)
+            {
+                playButton.currentFrame = 0;
+                settingsButton.currentFrame = 1;
+            }
+            else if (settingsButton.currentFrame == 1)
+            {
+                settingsButton.currentFrame = 0;
+                exitButton.currentFrame = 1;
+            }
+            else
+            {
+                exitButton.currentFrame = 0;
+                playButton.currentFrame = 1;
+            }
+        }
+    }
+
     void LoadDemo()
     {
         currentLevel = 0;
+        
 
-        Sprite bg = new Sprite("background.png");
+        bg = new Sprite("background.png");
         AddChild(bg);
+        bg.SetOrigin(bg.width / 2, bg.height / 2);
+        bg.scale = 1.2f;
+        bg.SetXY(width / 2, height / 2);
+        
 
-        Sprite exit = new Sprite("door.png");
-        AddChild(exit);
-        exit.SetOrigin(exit.width / 2, exit.height / 2);
-        exit.SetXY(1200, 750);
-        divingBells.Add(exit);
+        playButton = new AnimationSprite("menuButtonTemp.png", 2, 1);
+        AddChild(playButton);
+        playButton.SetXY(300, 300);
+        playButton.SetFrame(1);
 
-        RigidBody ball1 = new RigidBody("crate.png", 1, 1, new Vec2(600, 350), true);
-        AddChild(ball1);
-        rigidBodies.Add(ball1);
-        ball1.isPushable = true;
-        ball1.scale = 0.49f;
+        settingsButton = new AnimationSprite("menuButtonTemp.png", 2, 1);
+        AddChild(settingsButton);
+        settingsButton.SetXY(300, 500);
 
-        RigidBody wall3 = new RigidBody("testtile.png", 1, 1, new Vec2(1860, 570), false);
-        AddChild(wall3);
-        rigidBodies.Add(wall3);
+        exitButton = new AnimationSprite("menuButtonTemp.png", 2, 1);
+        AddChild(exitButton);
+        exitButton.SetXY(300, 700);
 
-        RigidBody floor1 = new RigidBody("testtile.png", 1, 1, new Vec2(width / 6, height - 70), false);
-        AddChild(floor1);
-        rigidBodies.Add(floor1);
-        floor1.scaleX = 4;
-        floor1.followMouse = false;
 
-        Button buttonRed = new Button("colors/redButton.png", 1, 1, new Vec2(500, 840));
-        AddChild(buttonRed);
+        
 
-        Turtle turtle = new Turtle("tutel.png", 1, 1, new Vec2(600, 700), true);
-        AddChild(turtle);
-        rigidBodies.Add(turtle);
 
-        Player player = new Player("candle.png", 7, 7, new Vec2(120, 100), true);
+
+        player = new Player("candle.png", 7, 7, new Vec2(120, 100), true);
         AddChild(player);
-        rigidBodies.Add(player);
+        player.SetScaleXY(3, 3);
+        player.SetCycle(0, 6, 5);
+        player.position.SetXY(1500, 540);
+
 
         water = new AnimationSprite("water.png", 2, 2);
         AddChild(water);
         water.SetCycle(0, 4, 15);
         water.alpha = 0.3f;
         water.x = -50;
-        water.y = height - 20;
+        water.y = height - 200;
         water.width = width + 100;
         water.height = height;
 
         AddChild(winScreen);
-        winScreen.scale = 0.25f;
+        winScreen.scale = 35f;
     }
     void LoadLevel1()
     {
@@ -146,16 +227,7 @@ public class MyGame : Game
         currentLevel = 1;
 
         //sounds
-        ambientSFX = new Sound("sfx/17.wav", true, true).Play();
-        soundChannels.Add(ambientSFX);
-
-        lowerSFX = new Sound("sfx/24.wav", true, true).Play();
-        lowerSFX.IsPaused = true;
-        soundChannels.Add(lowerSFX);
-
-        raiseSFX = new Sound("sfx/23.wav", true, true).Play();
-        raiseSFX.IsPaused = true;
-        soundChannels.Add(raiseSFX);
+        ambientSFX.IsPaused = false;
 
         //background
         bg = new Sprite("background.png");
@@ -353,8 +425,8 @@ public class MyGame : Game
         water.width = width + 100;
         water.height = height;
 
-        //AddChild(winScreen);
-        //winScreen.scale = 0.25f;
+        AddChild(winScreen);
+        winScreen.scale = 0.25f;
     }
 
     void LoadLevel2()
@@ -364,16 +436,7 @@ public class MyGame : Game
         currentLevel = 2;
 
         //sounds
-        ambientSFX = new Sound("sfx/17.wav", true, true).Play();
-        soundChannels.Add(ambientSFX);
-
-        lowerSFX = new Sound("sfx/24.wav", true, true).Play();
-        lowerSFX.IsPaused = true;
-        soundChannels.Add(lowerSFX);
-
-        raiseSFX = new Sound("sfx/23.wav", true, true).Play();
-        raiseSFX.IsPaused = true;
-        soundChannels.Add(raiseSFX);
+        ambientSFX.IsPaused = false;
 
         //background
         bg = new Sprite("background.png");
@@ -398,9 +461,7 @@ public class MyGame : Game
         AddChild(blank);
         blank.alpha = 0f;
 
-        player = new Player("candle.png", 7, 7, new Vec2(1f * 60, 14f * 60), true);
-        AddChild(player);
-        rigidBodies.Add(player);
+        
 
 
         //                                                              ----------TERRAIN----------
@@ -622,6 +683,16 @@ public class MyGame : Game
         box5.scale = 0.49f;
 
 
+        
+
+
+        //                                                        ----------PLAYER AND WATER----------
+
+        player = new Player("candle.png", 7, 7, new Vec2(60, 14.1f * 60), true);
+        AddChild(player);
+        rigidBodies.Add(player);
+
+
         //                                                            ----------BUBBLES----------
 
         Sprite bubble1 = new Sprite("bubble.png");
@@ -653,7 +724,7 @@ public class MyGame : Game
         water.SetCycle(0, 4, 15);
         water.alpha = 0.3f;
         water.x = -50;
-        water.y = height - 20;
+        water.y = height - 70;
         water.width = width + 100;
         water.height = height;
 
@@ -668,16 +739,7 @@ public class MyGame : Game
         currentLevel = 3;
 
         //sounds
-        ambientSFX = new Sound("sfx/17.wav", true, true).Play();
-        soundChannels.Add(ambientSFX);
-
-        lowerSFX = new Sound("sfx/24.wav", true, true).Play();
-        lowerSFX.IsPaused = true;
-        soundChannels.Add(lowerSFX);
-
-        raiseSFX = new Sound("sfx/23.wav", true, true).Play();
-        raiseSFX.IsPaused = true;
-        soundChannels.Add(raiseSFX);
+        ambientSFX.IsPaused = false;
 
         //background
         bg = new Sprite("background.png");
@@ -808,12 +870,12 @@ public class MyGame : Game
         water.SetCycle(0, 4, 15);
         water.alpha = 0.3f;
         water.x = -50;
-        water.y = height - 20;
+        water.y = height - 170;
         water.width = width + 100;
         water.height = height;
 
-        //AddChild(winScreen);
-        //winScreen.scale = 0.25f;
+        AddChild(winScreen);
+        winScreen.scale = 0.25f;
     }
 
     void BackgroundUpdate()

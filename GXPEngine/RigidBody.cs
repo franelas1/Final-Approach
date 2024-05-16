@@ -35,7 +35,7 @@ public class RigidBody : AnimationSprite
 
     public Sound landSFX = new Sound("sfx/3.wav", false, true);
     public Sound landBoxSFX = new Sound("sfx/15.wav", false, true);
-    public Sound splashSFX = new Sound("sfx/8.wav", false, true);
+    public Sound splashSFX = new Sound("sfx/8.mp3", false, true);
     public SoundChannel pushSFX;
 
     public bool splashed = false;
@@ -64,7 +64,7 @@ public class RigidBody : AnimationSprite
 
     public void Update()
     {
-
+        
         
         inWater = false;
         //Follow Mouse
@@ -77,7 +77,7 @@ public class RigidBody : AnimationSprite
 
 
 
-        if (moving)
+        if (moving && myGame.currentLevel != 0)
         {
             acceleration.y = gravity;
             if (bcb != null)

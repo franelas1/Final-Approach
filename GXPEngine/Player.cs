@@ -6,11 +6,14 @@ public class Player : RigidBody
 {
     bool won = false;
     bool walking = false;
-    bool deathPlayed = false;
+    public bool deathPlayed = false;
+    public bool reload = false;
     bool levelStart = false;
     private bool turnedRight = true;
     private SoundChannel deathSFX;
     private Sound walkSFX = new Sound("sfx/1.wav");
+    private SoundChannel walkingSFX = new Sound("sfx/18.wav", true, true).Play();
+    
     private SoundChannel airSFX;
     
     private float jumpForce = 12f;
@@ -20,125 +23,137 @@ public class Player : RigidBody
         bounciness = 0;
         isPlayer = true;
         airSFX = new Sound("sfx/19.wav", true, true).Play();
+        walkingSFX.IsPaused = true;
         SetScaleXY(.75f, .75f);
         myGame.soundChannels.Add(airSFX);
     }
 
     public void Update()
     {
-        isWalling = false;
-        myGame.winScreen.SetXY(x, y);
         
-        base.Update();
+            isWalling = false;
+            if (myGame.currentLevel != 0)
+            myGame.winScreen.SetXY(x, y);
 
-        inBell = false;
-        if (!deathPlayed)
-        {
-            if (myGame.winScreen.scale <= 35)
+            base.Update();
+
+            inBell = false;
+            if (!reload && !won)
             {
-                myGame.winScreen.scale += .25f;
-            }
-            if (myGame.winScreen.scale > 10) levelStart = true;
-        }
-        
-        
-        if (!grounded)
-        {
-            airSFX.IsPaused = false;
-
-        }
-        else
-        {
-
-            airSFX.IsPaused = true;
-
-        }
-
-        if (!deathPlayed && !won && levelStart)
-        {
-            if (Input.GetKey(Key.A) && Input.GetKey(Key.D))
-            {
-                walking = false;
-                acceleration.x = 0;
-            }
-
-            else if (Input.GetKey(Key.A))
-            {
-                turnedRight = false;
-                if (!walking)
+                if (myGame.winScreen.scale <= 35)
                 {
-                    walkSFX.Play();
+                    myGame.winScreen.scale += .25f;
                 }
-                walking = true;
-                acceleration.SetXY(-0.23f, acceleration.y);
+                if (myGame.winScreen.scale > 10) levelStart = true;
             }
-            else if (Input.GetKey(Key.D))
+
+            
+            if (!grounded && myGame.currentLevel != 0)
             {
-                turnedRight = true;
-                if (!walking)
-                {
-                    walkSFX.Play();
-                }
-                walking = true;
-                acceleration.SetXY(0.23f, acceleration.y);
+                airSFX.IsPaused = false;
+
             }
             else
             {
-                walking = false;
-                acceleration.x = 0;
+
+                airSFX.IsPaused = true;
+
             }
+
+            if (!deathPlayed && !won && levelStart)
+            {
+                if (Input.GetKey(Key.A) && Input.GetKey(Key.D))
+                {
+                    walking = false;
+                    acceleration.x = 0;
+                }
+
+                else if (Input.GetKey(Key.A))
+                {
+                    turnedRight = false;
+                    if (!walking)
+                    {
+                        walkSFX.Play();
+                    }
+                    walking = true;
+                    acceleration.SetXY(-0.23f, acceleration.y);
+                }
+                else if (Input.GetKey(Key.D))
+                {
+                    turnedRight = true;
+                    if (!walking)
+                    {
+                        walkSFX.Play();
+                    }
+                    walking = true;
+                    acceleration.SetXY(0.23f, acceleration.y);
+                }
+                else
+                {
+                    walking = false;
+                    acceleration.x = 0;
+                }
+                if (walking)
+                walkingSFX.IsPaused = false;
+                else walkingSFX.IsPaused = true;
 
             if ((Input.GetKeyDown(Key.SPACE) || (Input.GetKeyDown(Key.W))) && grounded && tempY + 13 > position.y && tempY - 13 < position.y)
-            {
-                velocity.SetXY(velocity.x, -jumpForce);
-                grounded = false;
-                isPushing = false;
-                walkSFX.Play();
-            }
-
-            foreach (Sprite other in myGame.divingBells)
-            {
-                if (y > other.y - other.height / 2 && y < other.y + other.height / 2 &&
-                    x > other.x - other.width / 2 && x < other.x + other.height / 2)
                 {
-                    if (other.alpha != 1f)
+                    velocity.SetXY(velocity.x, -jumpForce);
+                    grounded = false;
+                    isPushing = false;
+                    walkSFX.Play();
+                }
+
+                foreach (Sprite other in myGame.divingBells)
+                {
+                    if (y > other.y - other.height / 2 && y < other.y + other.height / 2 &&
+                        x > other.x - other.width / 2 && x < other.x + other.height / 2)
                     {
-                        inBell = true;
-                        continue;
-                    }
-                    else
-                    {
-                        
-                        won = true;
+                        if (other.alpha != 1f)
+                        {
+                            inBell = true;
+                            continue;
+                        }
+                        else
+                        {
+
+                            won = true;
+                        }
                     }
                 }
+                if (y > myGame.water.y && !inBell) Death();
             }
-            if (y > myGame.water.y && !inBell) Death();
-        }
 
-        if(deathPlayed)
-        {
-            if (myGame.winScreen.scale > 1f)
-            myGame.winScreen.scale -= 0.25f;
-            else
+            if (reload)
             {
+                Console.WriteLine(myGame.winScreen.scale);
 
-                myGame.Reload();
+                if (myGame.winScreen.scale > 1f)
+                    myGame.winScreen.scale -= 0.25f;
+                else
+                {
+
+                    myGame.Reload();
+                }
             }
-        }
 
 
-        if (won)
-        {
-            myGame.winScreen.scale -= 0.25f;
-            if (myGame.winScreen.scaleX == 0.5f)
+            if (won)
             {
-                myGame.currentLevel++;
-                myGame.Reload();
+                Console.WriteLine(myGame.winScreen.scale);
+                if (myGame.winScreen.scale > 1f)
+                    myGame.winScreen.scale -= 0.25f;
+                else
+                {
+                    myGame.currentLevel++;
+                    myGame.Reload();
+                }
             }
-        }
-        DirectionSetter(turnedRight);
-        Animation(walking, grounded, (isPushing || isWalling), deathPlayed);
+            DirectionSetter(turnedRight);
+            if (myGame.currentLevel != 0)
+            Animation(walking, grounded, (isPushing || isWalling), deathPlayed);
+        
     }
 
     public void Death()
@@ -148,6 +163,7 @@ public class Player : RigidBody
         {
             deathSFX = new Sound("sfx/16.wav", false).Play();
             deathPlayed = true;
+            reload = true;
         }
 
     }
