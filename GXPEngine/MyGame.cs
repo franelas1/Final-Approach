@@ -12,6 +12,7 @@ public class MyGame : Game
     public AnimationSprite playButton;
     public AnimationSprite settingsButton;
     public AnimationSprite exitButton;
+    public AnimationSprite light;
     public bool menu;
     public Sprite winScreen;
     public Player player;
@@ -342,31 +343,31 @@ public class MyGame : Game
         //                                                              ----------GATES----------
 
 
-        Door doorPurple = new Door("colors/purpleDoor.png", 1, 1, new Vec2(12.25f * 60, 13 * 60), false, buttonPurple, new Vec2(12.25f * 60, 10 * 60));
+        Door doorPurple = new Door("colors/purpleDoor.png", 1, 2, new Vec2(12.25f * 60, 13 * 60), false, buttonPurple, new Vec2(12.25f * 60, 10 * 60));
         blank.AddChild(doorPurple);
         rigidBodies.Add(doorPurple);
 
-        Door doorRed1 = new Door("colors/redDoor.png", 1, 1, new Vec2(17f*60, 13*60), false, buttonRed, new Vec2(17f * 60, 16 * 60));
+        Door doorRed1 = new Door("colors/redDoor.png", 1, 2, new Vec2(17f*60, 13*60), false, buttonRed, new Vec2(17f * 60, 16 * 60));
         blank.AddChild(doorRed1);
         rigidBodies.Add(doorRed1);
 
-        Door doorRed2 = new Door("colors/redDoor.png", 1, 1, new Vec2(19f * 60, 16 * 60), false, buttonRed, new Vec2(19f * 60, 13 * 60));
+        Door doorRed2 = new Door("colors/redDoor.png", 1, 2, new Vec2(19f * 60, 16 * 60), false, buttonRed, new Vec2(19f * 60, 13 * 60));
         blank.AddChild(doorRed2);
         rigidBodies.Add(doorRed2);
 
-        Door doorPink = new Door("colors/pinkDoorHor.png", 1, 1, new Vec2(20.5f * 60, 7.25f * 60), false, buttonPink, new Vec2(24.5f * 60, 7.25f * 60));
+        Door doorPink = new Door("colors/pinkDoorHor.png", 2, 1, new Vec2(20.5f * 60, 7.25f * 60), false, buttonPink, new Vec2(24.5f * 60, 7.25f * 60));
         blank.AddChild(doorPink);
         rigidBodies.Add(doorPink);
 
-        Door doorYellow = new Door("colors/yellowDoorHor.png", 1, 1, new Vec2(24.5f * 60, 9.25f * 60), false, buttonYellow, new Vec2(20.5f * 60, 9.25f * 60));
+        Door doorYellow = new Door("colors/yellowDoorHor.png", 2, 1, new Vec2(24.5f * 60, 9.25f * 60), false, buttonYellow, new Vec2(20.5f * 60, 9.25f * 60));
         blank.AddChild(doorYellow);
         rigidBodies.Add(doorYellow);
 
-        Door doorBlue = new Door("colors/blueDoor.png", 1, 1, new Vec2(17.75f * 60, 370), false, buttonBlue, new Vec2(17.75f * 60, 150));
+        Door doorBlue = new Door("colors/blueDoor.png", 1, 2, new Vec2(17.75f * 60, 370), false, buttonBlue, new Vec2(17.75f * 60, 150));
         blank.AddChild(doorBlue);
         rigidBodies.Add(doorBlue);
 
-        Door doorOrange = new Door("colors/orangeDoor.png", 1, 1, new Vec2(16*60 - 10, 150), false, buttonOrange, new Vec2(16*60 - 10, 370));
+        Door doorOrange = new Door("colors/orangeDoor.png", 1, 2, new Vec2(16*60 - 10, 150), false, buttonOrange, new Vec2(16*60 - 10, 370));
         blank.AddChild(doorOrange);
         rigidBodies.Add(doorOrange);
 
@@ -374,10 +375,10 @@ public class MyGame : Game
         //                                                              ----------FANS----------
 
 
-        Fan fanGreen = new Fan("colors/greenFan.png", 1, 1, new Vec2(24.5f * 60, 16 * 60), false, 4f * 60, buttonGreen);
+        Fan fanGreen = new Fan("colors/greenFan.png", 2, 1, new Vec2(24.5f * 60, 16 * 60), false, 4f * 60, buttonGreen);
         AddChild(fanGreen);
 
-        Fan fanPink = new Fan("colors/pinkFan.png", 1, 1, new Vec2(25.8f * 60, 356), true, 5f * 60, buttonPink);
+        Fan fanPink = new Fan("colors/pinkFan.png", 2, 1, new Vec2(25.8f * 60, 356), true, 5f * 60, buttonPink);
         AddChild(fanPink);
 
 
@@ -415,11 +416,18 @@ public class MyGame : Game
         box5.scale = 0.49f;
 
 
-        //                                                        ----------WATER AND END SCREEN----------
+        //                                                        ----------WATER AND END SCREEN----------        
 
         player = new Player("candle.png", 7, 7, new Vec2(120, 770), true);
         AddChild(player);
         rigidBodies.Add(player);
+
+        /*light = new AnimationSprite("light.png", 3, 2, 6, false, false);
+        light.SetOrigin(light.width / 2, light.height / 2);
+        light.SetScaleXY(0.5f);
+        light.alpha = 0.4f;
+        light.SetXY(-15, -52);
+        player.AddChild(light);*/
 
         water = new AnimationSprite("water.png", 2, 2);
         AddChild(water);
@@ -579,76 +587,76 @@ public class MyGame : Game
 
         //                                                              ----------GATES----------
 
-        Door doorPink1 = new Door("colors/pinkDoor.png", 1, 1, new Vec2(8.75f * 60, 13.5f * 60), false, buttonPink, new Vec2(8.75f * 60, 18f * 60));
+        Door doorPink1 = new Door("colors/pinkDoor.png", 1, 2, new Vec2(8.75f * 60, 13.5f * 60), false, buttonPink, new Vec2(8.75f * 60, 18f * 60));
         blank.AddChild(doorPink1);
         rigidBodies.Add(doorPink1);
 
-        Door doorPink2 = new Door("colors/pinkDoorHor.png", 1, 1, new Vec2(3.5f * 60, 12.25f * 60), false, buttonPink, new Vec2(6.5f * 60, 12.25f * 60));
+        Door doorPink2 = new Door("colors/pinkDoorHor.png", 2, 1, new Vec2(3.5f * 60, 12.25f * 60), false, buttonPink, new Vec2(6.5f * 60, 12.25f * 60));
         blank.AddChild(doorPink2);
         rigidBodies.Add(doorPink2);
 
-        Door doorGreen = new Door("colors/greenDoorHor.png", 1, 1, new Vec2(24.5f * 60, 14.5f * 60), false, buttonGreen, new Vec2(22f * 60, 14.5f * 60));
+        Door doorGreen = new Door("colors/greenDoorHor.png", 2, 1, new Vec2(24.5f * 60, 14.5f * 60), false, buttonGreen, new Vec2(22f * 60, 14.5f * 60));
         blank.AddChild(doorGreen);
         rigidBodies.Add(doorGreen);
 
-        Door doorYellow1 = new Door("colors/yellowDoor.png", 1, 1, new Vec2(23.75f * 60, 5.5f * 60), false, buttonYellow, new Vec2(23.75f * 60, 2.5f * 60));
+        Door doorYellow1 = new Door("colors/yellowDoor.png", 1, 2, new Vec2(23.75f * 60, 5.5f * 60), false, buttonYellow, new Vec2(23.75f * 60, 2.5f * 60));
         blank.AddChild(doorYellow1);
         rigidBodies.Add(doorYellow1);
 
-        Door doorYellow2 = new Door("colors/yellowDoor.png", 1, 1, new Vec2(26.25f * 60, 12.5f * 60), false, buttonYellow, new Vec2(26.25f * 60, 9.5f * 60));
+        Door doorYellow2 = new Door("colors/yellowDoor.png", 1, 2, new Vec2(26.25f * 60, 12.5f * 60), false, buttonYellow, new Vec2(26.25f * 60, 9.5f * 60));
         blank.AddChild(doorYellow2);
         rigidBodies.Add(doorYellow2);
 
-        Door doorYellow3 = new Door("colors/yellowDoor.png", 1, 1, new Vec2(27.25f * 60, 13f * 60), false, buttonYellow, new Vec2(27.25f * 60, 10f * 60));
+        Door doorYellow3 = new Door("colors/yellowDoor.png", 1, 2, new Vec2(27.25f * 60, 13f * 60), false, buttonYellow, new Vec2(27.25f * 60, 10f * 60));
         blank.AddChild(doorYellow3);
         rigidBodies.Add(doorYellow3);
 
-        Door doorYellow4 = new Door("colors/yellowDoor.png", 1, 1, new Vec2(28.25f * 60, 13.5f * 60), false, buttonYellow, new Vec2(28.25f * 60, 10.5f * 60));
+        Door doorYellow4 = new Door("colors/yellowDoor.png", 1, 2, new Vec2(28.25f * 60, 13.5f * 60), false, buttonYellow, new Vec2(28.25f * 60, 10.5f * 60));
         blank.AddChild(doorYellow4);
         rigidBodies.Add(doorYellow4);
 
-        Door doorRed1 = new Door("colors/redDoor.png", 1, 1, new Vec2(19.25f * 60, 4.5f * 60), false, buttonRed, new Vec2(19.25f * 60, 7.5f * 60));
+        Door doorRed1 = new Door("colors/redDoor.png", 1, 2, new Vec2(19.25f * 60, 4.5f * 60), false, buttonRed, new Vec2(19.25f * 60, 7.5f * 60));
         blank.AddChild(doorRed1);
         rigidBodies.Add(doorRed1);
 
-        Door doorRed2 = new Door("colors/redDoor.png", 1, 1, new Vec2(19.75f * 60, 4.5f * 60), false, buttonRed, new Vec2(19.75f * 60, 7.5f * 60));
+        Door doorRed2 = new Door("colors/redDoor.png", 1, 2, new Vec2(19.75f * 60, 4.5f * 60), false, buttonRed, new Vec2(19.75f * 60, 7.5f * 60));
         blank.AddChild(doorRed2);
         rigidBodies.Add(doorRed2);
 
-        Door doorPurple1 = new Door("colors/purpleDoorHor.png", 1, 1, new Vec2(11f * 60, 3.25f * 60), false, buttonPurple, new Vec2(9f * 60, 3.25f * 60));
+        Door doorPurple1 = new Door("colors/purpleDoorHor.png", 2, 1, new Vec2(11f * 60, 3.25f * 60), false, buttonPurple, new Vec2(9f * 60, 3.25f * 60));
         doorPurple1.scaleX = 0.3f;
         blank.AddChild(doorPurple1);
         rigidBodies.Add(doorPurple1);
 
-        Door doorPurple2 = new Door("colors/purpleDoor.png", 1, 1, new Vec2(3.75f * 60, 5.5f * 60), false, buttonPurple, new Vec2(3.75f * 60, 9f * 60));
+        Door doorPurple2 = new Door("colors/purpleDoor.png", 1, 2, new Vec2(3.75f * 60, 5.5f * 60), false, buttonPurple, new Vec2(3.75f * 60, 9f * 60));
         blank.AddChild(doorPurple2);
         rigidBodies.Add(doorPurple2);
 
-        Door doorWhite1 = new Door("colors/whiteDoorHor.png", 1, 1, new Vec2(11f * 60, 3.25f * 60), false, buttonWhite, new Vec2(13f * 60, 3.25f * 60));
+        Door doorWhite1 = new Door("colors/whiteDoorHor.png", 2, 1, new Vec2(11f * 60, 3.25f * 60), false, buttonWhite, new Vec2(13f * 60, 3.25f * 60));
         doorWhite1.scaleX = 0.3f;
         blank.AddChild(doorWhite1);
         rigidBodies.Add(doorWhite1);
 
-        Door doorWhite2 = new Door("colors/whiteDoor.png", 1, 1, new Vec2(3.25f * 60, 5.5f * 60), false, buttonWhite, new Vec2(3.25f * 60, 9f * 60));
+        Door doorWhite2 = new Door("colors/whiteDoor.png", 1, 2, new Vec2(3.25f * 60, 5.5f * 60), false, buttonWhite, new Vec2(3.25f * 60, 9f * 60));
         blank.AddChild(doorWhite2);
         rigidBodies.Add(doorWhite2);
 
 
         //                                                              ----------FANS----------
 
-        Fan fanOrange1 = new Fan("colors/orangeFan.png", 1, 1, new Vec2(19f * 60, 11f * 60), false, 10f * 60, buttonOrange);
+        Fan fanOrange1 = new Fan("colors/orangeFan.png", 2, 1, new Vec2(19f * 60, 11f * 60), false, 10f * 60, buttonOrange);
         AddChild(fanOrange1);
 
-        Fan fanOrange2 = new Fan("colors/orangeFan.png", 1, 1, new Vec2(24f * 60, 8f * 60), false, 10f * 60, buttonOrange);
+        Fan fanOrange2 = new Fan("colors/orangeFan.png", 2, 1, new Vec2(24f * 60, 8f * 60), false, 10f * 60, buttonOrange);
         AddChild(fanOrange2);
 
-        Fan fanBlue1 = new Fan("colors/blueFan.png", 1, 1, new Vec2(1f * 60, 2f * 60), false, 9f * 60, buttonBlue);
+        Fan fanBlue1 = new Fan("colors/blueFan.png", 2, 1, new Vec2(1f * 60, 2f * 60), false, 9f * 60, buttonBlue);
         AddChild(fanBlue1);
 
-        Fan fanBlue2 = new Fan("colors/blueFan.png", 1, 1, new Vec2(15f * 60, 2f * 60), true, 3f * 60, buttonBlue);
+        Fan fanBlue2 = new Fan("colors/blueFan.png", 2, 1, new Vec2(15f * 60, 2f * 60), true, 3f * 60, buttonBlue);
         AddChild(fanBlue2);
 
-        Fan fanBlue3 = new Fan("colors/blueFan.png", 1, 1, new Vec2(23f * 60, 3f * 60), true, 11f * 60, buttonBlue);
+        Fan fanBlue3 = new Fan("colors/blueFan.png", 2, 1, new Vec2(23f * 60, 3f * 60), true, 11f * 60, buttonBlue);
         AddChild(fanBlue3);
 
 
@@ -687,7 +695,7 @@ public class MyGame : Game
 
         //                                                        ----------PLAYER AND WATER----------
 
-        player = new Player("candle.png", 7, 7, new Vec2(18f* 60, 5f * 60), true); //60, 14.1f * 60
+        player = new Player("candle.png", 7, 7, new Vec2(60, 14.1f * 60), true); //18f* 60, 5f * 60 <-- coords if you wanna start at the second half
         AddChild(player);
         rigidBodies.Add(player);
 
@@ -863,55 +871,55 @@ public class MyGame : Game
 
         //                                                              ----------GATES----------
 
-        Door doorPink = new Door("colors/pinkDoor.png", 1, 1, new Vec2(12.25f * 60, 2f * 60), false, buttonPink, new Vec2(12.25f * 60, 4.75f * 60));
+        Door doorPink = new Door("colors/pinkDoor.png", 1, 2, new Vec2(12.25f * 60, 2f * 60), false, buttonPink, new Vec2(12.25f * 60, 4.75f * 60));
         blank.AddChild(doorPink);
         rigidBodies.Add(doorPink);
 
-        Door doorRed1 = new Door("colors/redDoor.png", 1, 1, new Vec2(21.25f * 60, 10.5f * 60), false, buttonRed, new Vec2(21.25f * 60, 14f * 60));
+        Door doorRed1 = new Door("colors/redDoor.png", 1, 2, new Vec2(21.25f * 60, 10.5f * 60), false, buttonRed, new Vec2(21.25f * 60, 14f * 60));
         blank.AddChild(doorRed1);
         rigidBodies.Add(doorRed1);
 
-        Door doorRed2 = new Door("colors/redDoorHor.png", 1, 1, new Vec2(19.5f * 60, 8.75f * 60), false, buttonRed, new Vec2(23f * 60, 8.75f * 60));
+        Door doorRed2 = new Door("colors/redDoorHor.png", 2, 1, new Vec2(19.5f * 60, 8.75f * 60), false, buttonRed, new Vec2(23f * 60, 8.75f * 60));
         blank.AddChild(doorRed2);
         rigidBodies.Add(doorRed2);
 
-        Door doorRed3 = new Door("colors/redDoorHor.png", 1, 1, new Vec2(23.5f * 60, 4.6f * 60), false, buttonRed, new Vec2(20.5f * 60, 4.6f * 60));
+        Door doorRed3 = new Door("colors/redDoorHor.png", 2, 1, new Vec2(23.5f * 60, 4.6f * 60), false, buttonRed, new Vec2(20.5f * 60, 4.6f * 60));
         blank.AddChild(doorRed3);
         rigidBodies.Add(doorRed3);
 
-        Door doorYellow1 = new Door("colors/yellowDoor.png", 1, 1, new Vec2(24.75f * 60, 10.5f * 60), false, buttonYellow, new Vec2(24.75f * 60, 14f * 60));
+        Door doorYellow1 = new Door("colors/yellowDoor.png", 1, 2, new Vec2(24.75f * 60, 10.5f * 60), false, buttonYellow, new Vec2(24.75f * 60, 14f * 60));
         blank.AddChild(doorYellow1);
         rigidBodies.Add(doorYellow1);
 
-        Door doorYellow2 = new Door("colors/yellowDoorHor.png", 1, 1, new Vec2(23.5f * 60, 8.25f * 60), false, buttonYellow, new Vec2(26.5f * 60, 8.25f * 60));
+        Door doorYellow2 = new Door("colors/yellowDoorHor.png", 2, 1, new Vec2(23.5f * 60, 8.25f * 60), false, buttonYellow, new Vec2(26.5f * 60, 8.25f * 60));
         blank.AddChild(doorYellow2);
         rigidBodies.Add(doorYellow2);
 
-        Door doorPurple1 = new Door("colors/purpleDoor.png", 1, 1, new Vec2(21.75f * 60, 7f * 60), false, buttonPurple, new Vec2(21.75f * 60, 4.5f * 60));
+        Door doorPurple1 = new Door("colors/purpleDoor.png", 1, 2, new Vec2(21.75f * 60, 7f * 60), false, buttonPurple, new Vec2(21.75f * 60, 4.5f * 60));
         blank.AddChild(doorPurple1);
         rigidBodies.Add(doorPurple1);
 
-        Door doorPurple2 = new Door("colors/purpleDoor.png", 1, 1, new Vec2(28.75f * 60, 13.5f * 60), false, buttonPurple, new Vec2(28.75f * 60, 17f * 60));
+        Door doorPurple2 = new Door("colors/purpleDoor.png", 1, 2, new Vec2(28.75f * 60, 13.5f * 60), false, buttonPurple, new Vec2(28.75f * 60, 17f * 60));
         blank.AddChild(doorPurple2);
         rigidBodies.Add(doorPurple2);
 
-        Door doorOrange = new Door("colors/orangeDoorHor.png", 1, 1, new Vec2(30f * 60, 4.5f * 60), false, buttonOrange, new Vec2(27f * 60, 4.5f * 60));
+        Door doorOrange = new Door("colors/orangeDoorHor.png", 2, 1, new Vec2(30f * 60, 4.5f * 60), false, buttonOrange, new Vec2(27f * 60, 4.5f * 60));
         blank.AddChild(doorOrange);
         rigidBodies.Add(doorOrange);
 
-        Door doorBlue1 = new Door("colors/blueDoorHor.png", 1, 1, new Vec2(6.5f * 60, 11f * 60), false, buttonBlue, new Vec2(10.5f * 60, 11f * 60));
+        Door doorBlue1 = new Door("colors/blueDoorHor.png", 2, 1, new Vec2(6.5f * 60, 11f * 60), false, buttonBlue, new Vec2(10.5f * 60, 11f * 60));
         blank.AddChild(doorBlue1);
         rigidBodies.Add(doorBlue1);
 
-        Door doorBlue2 = new Door("colors/blueDoorHor.png", 1, 1, new Vec2(11.5f * 60, 14f * 60), false, buttonBlue, new Vec2(14.5f * 60, 14f * 60));
+        Door doorBlue2 = new Door("colors/blueDoorHor.png", 2, 1, new Vec2(11.5f * 60, 14f * 60), false, buttonBlue, new Vec2(14.5f * 60, 14f * 60));
         blank.AddChild(doorBlue2);
         rigidBodies.Add(doorBlue2);
 
-        Door doorBlue3 = new Door("colors/blueDoorHor.png", 1, 1, new Vec2(2.5f * 60, 10.25f * 60), false, buttonBlue, new Vec2(-0.5f * 60, 10.25f * 60));
+        Door doorBlue3 = new Door("colors/blueDoorHor.png", 2, 1, new Vec2(2.5f * 60, 10.25f * 60), false, buttonBlue, new Vec2(-0.5f * 60, 10.25f * 60));
         blank.AddChild(doorBlue3);
         rigidBodies.Add(doorBlue3);
 
-        Door doorWhite = new Door("colors/whiteDoorHor.png", 1, 1, new Vec2(2.5f * 60, 10.75f * 60), false, buttonWhite, new Vec2(-0.5f * 60, 10.75f * 60));
+        Door doorWhite = new Door("colors/whiteDoorHor.png", 2, 1, new Vec2(2.5f * 60, 10.75f * 60), false, buttonWhite, new Vec2(-0.5f * 60, 10.75f * 60));
         blank.AddChild(doorWhite);
         rigidBodies.Add(doorWhite);
 

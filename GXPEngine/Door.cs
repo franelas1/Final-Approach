@@ -75,9 +75,13 @@ public class Door : RigidBody
         if (active)
         {
             MoveToTarget();
+            SetCycle(1, 1);
         }
-        else MoveToOrigin();
-
+        else
+        {
+            MoveToOrigin();
+            SetCycle(0, 1);
+        }
         
     }
 }

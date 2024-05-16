@@ -6,15 +6,15 @@ public class Player : RigidBody
 {
     bool won = false;
     bool walking = false;
+    bool levelStart = false;
     public bool deathPlayed = false;
     public bool reload = false;
-    bool levelStart = false;
     private bool turnedRight = true;
     private SoundChannel deathSFX;
-    private Sound walkSFX = new Sound("sfx/1.wav");
-    private SoundChannel walkingSFX = new Sound("sfx/18.wav", true, true).Play();
-    
     private SoundChannel airSFX;
+    private SoundChannel walkingSFX = new Sound("sfx/18.wav", true, true).Play();
+    private Sound walkSFX = new Sound("sfx/1.wav");
+    
     
     private float jumpForce = 12f;
 
@@ -26,6 +26,7 @@ public class Player : RigidBody
         walkingSFX.IsPaused = true;
         SetScaleXY(.75f, .75f);
         myGame.soundChannels.Add(airSFX);
+
     }
 
     public void Update()
@@ -153,7 +154,6 @@ public class Player : RigidBody
             DirectionSetter(turnedRight);
             if (myGame.currentLevel != 0)
             Animation(walking, grounded, (isPushing || isWalling), deathPlayed);
-        
     }
 
     public void Death()
@@ -170,17 +170,20 @@ public class Player : RigidBody
 
     void Animation(bool walking_temp, bool grounded_temp, bool isPushing_temp, bool deathPlayed_temp)
     {
-        
 
         if (deathPlayed_temp) 
         {
             
+            //myGame.light.SetCycle(5, 1);
+
             if (currentFrame == 46)
             {
                 SetCycle(46, 1, 5);
             }
             else
-            SetCycle(35, 14, 5);
+            {
+                SetCycle(35, 14, 5);
+            }
         }
 
         else if (!grounded_temp)
@@ -199,26 +202,30 @@ public class Player : RigidBody
                 isPushing = false;
             }
         }
-
         
         else if(isPushing_temp)
         {
             SetCycle(23, 12, 3);
         }
+
         else if(walking_temp)
         {
             SetCycle(6, 12, 3);
         }
+
         else if (velocity.y > 4f)
         {
             SetCycle(20, 3, 5);
             
         }
+
         else
         {
+            //myGame.light.SetCycle(0, 5, 3);
             SetCycle(0, 6, 5);
         }
         Animate();
+        //myGame.light.Animate();
     }
 
     void DirectionSetter(bool isTurnedRight)

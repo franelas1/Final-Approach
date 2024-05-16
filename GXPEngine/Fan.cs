@@ -70,6 +70,7 @@ public class Fan : AnimationSprite
                 fanSFX = new Sound("sfx/25.wav", true).Play();
                 myGame.soundChannels.Add(fanSFX);
                 switched = true;
+                SetCycle(0, 2, 2);
             }
             CollisionCheck();
         }
@@ -78,7 +79,9 @@ public class Fan : AnimationSprite
             fanSFX.Stop();
             myGame.soundChannels.Remove(fanSFX);
             switched = false;
+            SetCycle(currentFrame, 1);
         }
+        Animate();
         Wind();
     }
 
