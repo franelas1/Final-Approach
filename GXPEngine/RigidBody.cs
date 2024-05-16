@@ -115,7 +115,9 @@ public class RigidBody : AnimationSprite
                             if (!Input.GetKey(Key.A) && !Input.GetKey(Key.D))
                             {
                                 /*velocity.y = 0.1f;*/
-                                velocity.x = bcb.velocity.x /** 1.05f*/;
+                                if (bcb.isPushable)
+                                    velocity.x = bcb.velocity.x * 2f;
+                                else velocity.x = bcb.velocity.x;
                             }
 
                             if (Input.GetKey(Key.DOWN))
@@ -198,10 +200,7 @@ public class RigidBody : AnimationSprite
 
         top = position.y - height / 2;
         bottom = position.y + height / 2;
-        if (isTurtle)
-        {
-            bottom = (position.y + height / 2) - 40;
-        }
+        
         left = position.x - width / 2;
         right = position.x + width / 2;
 
@@ -267,7 +266,7 @@ public class RigidBody : AnimationSprite
         foreach (RigidBody other in myGame.rigidBodies)
         {
             SolveIntersections();
-            if (other == this || (!other.moving && !moving)) continue;
+            if (other == this || (!other.moving && !moving) && !moving) continue;
 
             if (other.top < sim.y + (height / 2) && other.left < right && other.right > left && other.bottom > top)
             {
@@ -284,7 +283,7 @@ public class RigidBody : AnimationSprite
                     onBox = true;
                 }
 
-                if ((other.isPushable || other.isTurtle) && !isTurtle)
+                if ((other.isPushable || other.isTurtle) && !isTurtle && moving)
                 {
                     
                     if (bcb != other)

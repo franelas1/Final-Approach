@@ -43,11 +43,13 @@ public class Button : AnimationSprite
         {
             pressSFX.Play();
             switched = true;
+            SetFrame(1);
         }
         if (switched && !isActivated)
         {
             releaseSFX.Play();
             switched = false;
+            SetFrame(0);
         }
         
     }

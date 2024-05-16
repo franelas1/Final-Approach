@@ -118,13 +118,13 @@ public class MyGame : Game
     {
         if (Input.GetKeyDown(Key.SPACE))
         {
-            if (playButton.currentFrame == 1)
+            if (playButton.currentFrame == 0)
             {
                 currentLevel = 1;
                 
                 
             }
-            else if (settingsButton.currentFrame == 1)
+            else if (settingsButton.currentFrame == 0)
             {
 
             }
@@ -133,39 +133,39 @@ public class MyGame : Game
 
         if (Input.GetKeyDown(Key.UP))
         {
-            if (playButton.currentFrame == 1)
+            if (playButton.currentFrame == 0)
             {
-                playButton.currentFrame = 0;
-                exitButton.currentFrame = 1;
-            }
-            else if (settingsButton.currentFrame == 1)
-            {
-                settingsButton.currentFrame = 0;
                 playButton.currentFrame = 1;
+                exitButton.currentFrame = 0;
+            }
+            else if (settingsButton.currentFrame == 0)
+            {
+                settingsButton.currentFrame = 1;
+                playButton.currentFrame = 0;
             }
             else
             {
-                exitButton.currentFrame = 0;
-                settingsButton.currentFrame = 1;
+                exitButton.currentFrame = 1;
+                settingsButton.currentFrame = 0;
             }
         }
 
         if (Input.GetKeyDown(Key.DOWN))
         {
-            if (playButton.currentFrame == 1)
+            if (playButton.currentFrame == 0)
             {
-                playButton.currentFrame = 0;
-                settingsButton.currentFrame = 1;
-            }
-            else if (settingsButton.currentFrame == 1)
-            {
+                playButton.currentFrame = 1;
                 settingsButton.currentFrame = 0;
-                exitButton.currentFrame = 1;
+            }
+            else if (settingsButton.currentFrame == 0)
+            {
+                settingsButton.currentFrame = 1;
+                exitButton.currentFrame = 0;
             }
             else
             {
-                exitButton.currentFrame = 0;
-                playButton.currentFrame = 1;
+                exitButton.currentFrame = 1;
+                playButton.currentFrame = 0;
             }
         }
     }
@@ -182,21 +182,26 @@ public class MyGame : Game
         bg.SetXY(width / 2, height / 2);
         
 
-        playButton = new AnimationSprite("menuButtonTemp.png", 2, 1);
+        playButton = new AnimationSprite("play.png", 2, 1);
         AddChild(playButton);
-        playButton.SetXY(300, 300);
-        playButton.SetFrame(1);
+        playButton.SetXY(300, 400);
+        playButton.scale = 1.5f;
+        playButton.SetFrame(0);
 
-        settingsButton = new AnimationSprite("menuButtonTemp.png", 2, 1);
+        settingsButton = new AnimationSprite("options.png", 2, 1);
         AddChild(settingsButton);
-        settingsButton.SetXY(300, 500);
+        settingsButton.SetXY(300, 600);
+        settingsButton.scale = 1.5f;
+        settingsButton.SetFrame(1);
 
-        exitButton = new AnimationSprite("menuButtonTemp.png", 2, 1);
+        exitButton = new AnimationSprite("exit.png", 2, 1);
         AddChild(exitButton);
-        exitButton.SetXY(300, 700);
+        exitButton.SetXY(300, 800);
+        exitButton.scale = 1.5f;
+        exitButton.SetFrame(1);
 
 
-        
+
 
 
 
@@ -311,26 +316,26 @@ public class MyGame : Game
         //                                                              ----------BUTTONS----------
 
 
-        Button buttonPurple = new Button("colors/purpleButton.png", 1, 1, new Vec2(8 * 60, 14 * 60));
+        Button buttonPurple = new Button("colors/purpleButton.png", 2, 1, new Vec2(8 * 60, 14 * 60));
         AddChild(buttonPurple);
 
-        Button buttonRed = new Button("colors/redButton.png", 1, 1, new Vec2(15 * 60, 15 * 60));
+        Button buttonRed = new Button("colors/redButton.png", 2, 1, new Vec2(15 * 60, 15 * 60));
         AddChild(buttonRed);
         buttonRed.rotation = 180;
 
-        Button buttonGreen = new Button("colors/greenButton.png", 1, 1, new Vec2(24 * 60, 14 * 60));
+        Button buttonGreen = new Button("colors/greenButton.png", 2, 1, new Vec2(24 * 60, 14 * 60));
         AddChild(buttonGreen);
 
-        Button buttonBlue = new Button("colors/blueButton.png", 1, 1, new Vec2(24 * 60, 11 * 60));
+        Button buttonBlue = new Button("colors/blueButton.png", 2, 1, new Vec2(24 * 60, 11 * 60));
         AddChild(buttonBlue);
 
-        Button buttonOrange = new Button("colors/orangeButton.png", 1, 1, new Vec2(20 * 60, 11 * 60));
+        Button buttonOrange = new Button("colors/orangeButton.png", 2, 1, new Vec2(20 * 60, 11 * 60));
         AddChild(buttonOrange);
 
-        Button buttonPink = new Button("colors/pinkButton.png", 1, 1, new Vec2(25 * 60, 240));
+        Button buttonPink = new Button("colors/pinkButton.png", 2, 1, new Vec2(25 * 60, 240));
         AddChild(buttonPink);
 
-        Button buttonYellow = new Button("colors/yellowButton.png", 1, 1, new Vec2(21 * 60, 240));
+        Button buttonYellow = new Button("colors/yellowButton.png", 2, 1, new Vec2(21 * 60, 240));
         AddChild(buttonYellow);
 
 
@@ -542,32 +547,32 @@ public class MyGame : Game
 
         //                                                              ----------BUTTONS----------
 
-        Button buttonPink = new Button("colors/pinkButton.png", 1, 1, new Vec2(7f * 60, 11f * 60));
+        Button buttonPink = new Button("colors/pinkButton.png", 2, 1, new Vec2(7f * 60, 11f * 60));
         buttonPink.rotation = 180;
         AddChild(buttonPink);
 
-        Button buttonOrange = new Button("colors/orangeButton.png", 1, 1, new Vec2(17f * 60, 11f * 60));
+        Button buttonOrange = new Button("colors/orangeButton.png", 2, 1, new Vec2(17f * 60, 11f * 60));
         buttonOrange.rotation = 180;
         AddChild(buttonOrange);
 
-        Button buttonGreen = new Button("colors/greenButton.png", 1, 1, new Vec2(25f * 60, 13f * 60));
+        Button buttonGreen = new Button("colors/greenButton.png", 2, 1, new Vec2(25f * 60, 13f * 60));
         AddChild(buttonGreen);
 
-        Button buttonYellow = new Button("colors/yellowButton.png", 1, 1, new Vec2(30f * 60, 10f * 60));
+        Button buttonYellow = new Button("colors/yellowButton.png", 2, 1, new Vec2(30f * 60, 10f * 60));
         AddChild(buttonYellow);
 
-        Button buttonBlue = new Button("colors/blueButton.png", 1, 1, new Vec2(13f * 60, 7f * 60));
+        Button buttonBlue = new Button("colors/blueButton.png", 2, 1, new Vec2(13f * 60, 7f * 60));
         AddChild(buttonBlue);
 
-        Button buttonRed = new Button("colors/redButton.png", 1, 1, new Vec2(11f * 60, 4f * 60));
+        Button buttonRed = new Button("colors/redButton.png", 2, 1, new Vec2(11f * 60, 4f * 60));
         buttonRed.rotation = 180;
         AddChild(buttonRed);
 
-        Button buttonPurple = new Button("colors/purpleButton.png", 1, 1, new Vec2(12f * 60, 2f * 60));
+        Button buttonPurple = new Button("colors/purpleButton.png", 2, 1, new Vec2(12f * 60, 2f * 60));
         buttonPurple.rotation = 90;
         AddChild(buttonPurple);
 
-        Button buttonWhite = new Button("colors/whiteButton.png", 1, 1, new Vec2(10f * 60, 2f * 60));
+        Button buttonWhite = new Button("colors/whiteButton.png", 2, 1, new Vec2(10f * 60, 2f * 60));
         buttonWhite.rotation = 270;
         AddChild(buttonWhite);
 
@@ -834,31 +839,31 @@ public class MyGame : Game
 
         //                                                              ----------BUTTONS----------
 
-        Button buttonPink = new Button("colors/pinkButton.png", 1, 1, new Vec2(7.5f * 60, 6f * 60));
+        Button buttonPink = new Button("colors/pinkButton.png", 2, 1, new Vec2(7.5f * 60, 6f * 60));
         AddChild(buttonPink);
 
-        Button buttonRed = new Button("colors/redButton.png", 1, 1, new Vec2(17f * 60, 3f * 60));
+        Button buttonRed = new Button("colors/redButton.png", 2, 1, new Vec2(17f * 60, 3f * 60));
         AddChild(buttonRed);
 
-        Button buttonYellow = new Button("colors/yellowButton.png", 1, 1, new Vec2(20.5f * 60, 3f * 60));
+        Button buttonYellow = new Button("colors/yellowButton.png", 2, 1, new Vec2(20.5f * 60, 3f * 60));
         AddChild(buttonYellow);
 
-        Button buttonPurple = new Button("colors/purpleButton.png", 1, 1, new Vec2(23.5f * 60, 8f * 60));
+        Button buttonPurple = new Button("colors/purpleButton.png", 2, 1, new Vec2(23.5f * 60, 8f * 60));
         AddChild(buttonPurple);
 
-        Button buttonOrange = new Button("colors/orangeButton.png", 1, 1, new Vec2(27f * 60, 4f * 60));
+        Button buttonOrange = new Button("colors/orangeButton.png", 2, 1, new Vec2(27f * 60, 4f * 60));
         AddChild(buttonOrange);
 
-        Button buttonBlue = new Button("colors/blueButton.png", 1, 1, new Vec2(11f * 60, 10f * 60));
+        Button buttonBlue = new Button("colors/blueButton.png", 2, 1, new Vec2(11f * 60, 10f * 60));
         AddChild(buttonBlue);
 
-        Button buttonWhite = new Button("colors/blueButton.png", 1, 1, new Vec2(9f * 60, 17f * 60));
+        Button buttonWhite = new Button("colors/blueButton.png", 2, 1, new Vec2(9f * 60, 17f * 60));
         AddChild(buttonWhite);
 
 
         //                                                              ----------GATES----------
 
-        Door doorPink = new Door("colors/pinkDoor.png", 1, 1, new Vec2(12.23f * 60, 2f * 60), false, buttonPink, new Vec2(12.25f * 60, 4.69f * 60));
+        Door doorPink = new Door("colors/pinkDoor.png", 1, 1, new Vec2(12.25f * 60, 2f * 60), false, buttonPink, new Vec2(12.25f * 60, 4.75f * 60));
         blank.AddChild(doorPink);
         rigidBodies.Add(doorPink);
 
@@ -955,7 +960,7 @@ public class MyGame : Game
 
         //                                                        ----------WATER AND WIN SCREEN----------
 
-        player = new Player("candle.png", 7, 7, new Vec2(13f * 60, 9f * 60), true);
+        player = new Player("candle.png", 7, 7, new Vec2(2f * 60, 2.5f * 60), true);
         AddChild(player);
         rigidBodies.Add(player);
 
