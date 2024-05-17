@@ -67,6 +67,7 @@ public class MyGame : Game
         if (Input.GetKeyDown(Key.ONE)) { currentLevel = 1; Reload(); }
         if (Input.GetKeyDown(Key.TWO)) { currentLevel = 2; Reload(); }
         if (Input.GetKeyDown(Key.THREE)) { currentLevel = 3; Reload(); }
+        if (Input.GetKeyDown(Key.FOUR)) { currentLevel = 4; Reload(); }
         if (Input.GetKeyDown(Key.R) && currentLevel != 0) { player.reload = true; }
     }
 
@@ -105,6 +106,8 @@ public class MyGame : Game
                 LoadLevel2(); break;
             case 3:
                 LoadLevel3(); break;
+                case 4:
+                LoadLevel4(); break;
             default:
                 break;
         }
@@ -117,7 +120,7 @@ public class MyGame : Game
 
     void MenuControls()
     {
-        if (Input.GetKeyDown(Key.SPACE))
+        if (Input.GetKeyDown(Key.SPACE) || Input.GetKeyDown(Key.ENTER))
         {
             if (playButton.currentFrame == 0)
             {
@@ -132,7 +135,7 @@ public class MyGame : Game
             else Destroy();
         }
 
-        if (Input.GetKeyDown(Key.UP))
+        if (Input.GetKeyDown(Key.UP) || Input.GetKeyDown(Key.W))
         {
             if (playButton.currentFrame == 0)
             {
@@ -151,7 +154,7 @@ public class MyGame : Game
             }
         }
 
-        if (Input.GetKeyDown(Key.DOWN))
+        if (Input.GetKeyDown(Key.DOWN) || Input.GetKeyDown(Key.S))
         {
             if (playButton.currentFrame == 0)
             {
@@ -289,7 +292,7 @@ public class MyGame : Game
         AddChild(floor);
         rigidBodies.Add(floor);
 
-        RigidBody floor1 = new RigidBody("level1/19x5.png", 1, 1, new Vec2(570, 390), false);
+        RigidBody floor1 = new RigidBody("level1/19x5.png", 1, 1, new Vec2(600, 390), false);
         AddChild(floor1);
         rigidBodies.Add(floor1);
 
@@ -995,6 +998,12 @@ public class MyGame : Game
 
         AddChild(winScreen);
         winScreen.scale = 0.25f;
+    }
+
+    void LoadLevel4()
+    {
+        Sprite endScreen = new Sprite("ENDSCREEN.png");
+        AddChild(endScreen);
     }
 
     void BackgroundUpdate()

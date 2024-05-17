@@ -33,7 +33,7 @@ public class Fan : AnimationSprite
         
         SetOrigin(width / 2, height / 2);
         SetXY(position.x, position.y);
-
+        SetCycle(currentFrame, 1);
         if (isLeft) { Mirror(true, false); }
 
         wind.SetOrigin(this.width / 2, this.height/2);

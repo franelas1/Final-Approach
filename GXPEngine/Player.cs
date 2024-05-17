@@ -17,6 +17,7 @@ public class Player : RigidBody
     private Sound walkSFX = new Sound("sfx/1.wav");
     
     private AnimationSprite impactPFX = new AnimationSprite("particles/impact.png", 3, 2, 6);
+    private AnimationSprite walkPFX = new AnimationSprite("particles/walk.png", 4, 3);
     
     
     private float jumpForce = 12f;
@@ -29,21 +30,23 @@ public class Player : RigidBody
         walkingSFX.IsPaused = true;
         SetScaleXY(.75f, .75f);
         myGame.soundChannels.Add(airSFX);
-        
+        myGame.AddChild(walkPFX);
         impactPFX.SetOrigin(60,60);
         myGame.soundChannels.Add(walkingSFX);
+        walkPFX.SetOrigin(walkPFX.width / 2, walkPFX.height / 2);
     }
 
     public void Update()
     {
         
-            isWalling = false;
+        isWalling = false;
             if (myGame.currentLevel != 0)
             myGame.winScreen.SetXY(x, y);
-
+            
             base.Update();
-        
-        
+            
+            
+
         inBell = false;
             if (!reload && !won)
             {
@@ -69,10 +72,12 @@ public class Player : RigidBody
 
             if (!deathPlayed && !won && levelStart && myGame.player.scale < 1)
             {
-                if (Input.GetKey(Key.A) && Input.GetKey(Key.D))
+            
+            if (Input.GetKey(Key.A) && Input.GetKey(Key.D))
                 {
                     walking = false;
-                    acceleration.x = 0;
+                
+                acceleration.x = 0;
                 }
 
                 else if (Input.GetKey(Key.A))
@@ -83,7 +88,8 @@ public class Player : RigidBody
                         walkSFX.Play();
                     }
                     walking = true;
-                    acceleration.SetXY(-0.23f, acceleration.y);
+                
+                acceleration.SetXY(-0.23f, acceleration.y);
                 }
                 else if (Input.GetKey(Key.D))
                 {
@@ -93,11 +99,13 @@ public class Player : RigidBody
                         walkSFX.Play();
                     }
                     walking = true;
-                    acceleration.SetXY(0.23f, acceleration.y);
+                
+                acceleration.SetXY(0.23f, acceleration.y);
                 }
                 else
                 {
-                    walking = false;
+                
+                walking = false;
                     acceleration.x = 0;
                 }
                 if (walking)
@@ -190,10 +198,10 @@ public class Player : RigidBody
 
     void Animation(bool walking_temp, bool grounded_temp, bool isPushing_temp, bool deathPlayed_temp)
     {
-
+        
         if (deathPlayed_temp) 
         {
-            
+            walkPFX.SetCycle(0, 1, 2);
             //myGame.light.SetCycle(5, 1);
 
             if (currentFrame == 46)
@@ -222,22 +230,26 @@ public class Player : RigidBody
                 inAir = true;
                 isPushing = false;
             }
+            walkPFX.SetCycle(0, 1, 2);
         }
         
         else if(isPushing_temp)
         {
             SetCycle(23, 12, 3);
+            walkPFX.SetCycle(0, 12, 5);
         }
 
         else if(walking_temp)
         {
             SetCycle(6, 12, 3);
+            walkPFX.SetCycle(0, 12, 5);
+
         }
 
         else if (velocity.y > 4f)
         {
             SetCycle(20, 3, 5);
-            
+            walkPFX.SetCycle(0, 1, 2);
         }
 
         else
@@ -245,8 +257,10 @@ public class Player : RigidBody
             if (inAir)
                 LandParticle();
             SetCycle(0, 6, 5);
+            walkPFX.SetCycle(0, 1, 2);
         }
         Animate();
+        walkPFX.Animate();
         //myGame.light.Animate();
     }
 
@@ -255,12 +269,19 @@ public class Player : RigidBody
         if(isTurnedRight)
         {
             Mirror(false, false);
+            
             impactPFX.Mirror(false, false);
+            walkPFX.Mirror(false, false);
+            if (walkPFX.currentFrame == 2)
+            walkPFX.SetXY(x + 10, y - 12);
         }
         else
         {
             Mirror(true, false);
             impactPFX.Mirror(true, false);
+            walkPFX.Mirror(true, false);
+            if (walkPFX.currentFrame == 2)
+            walkPFX.SetXY(x - 10, y - 12);
         }
     }
 
