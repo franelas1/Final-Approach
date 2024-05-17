@@ -35,7 +35,7 @@ public class Door : RigidBody
     {
         if (!position.Equals(target))
         {
-            Console.WriteLine("moving");
+           
             velocity = (target - position).Normalized() * moveSpeed;
         }
         else velocity.SetXY(0, 0);

@@ -91,14 +91,14 @@ public class Fan : AnimationSprite
         {
             if(isLeft)
             {
-                if (other.top > top && other.top < bottom && other.right < left && other.isPushable && x - other.x < blowDistance)
+                if (other.top > top && other.top < bottom && other.right < right && other.isPushable && x - other.x < blowDistance)
                 {
                     other.acceleration.SetXY(-0.23f, other.acceleration.y);
                 }
             }
             if(!isLeft)
             {
-                if(other.top > top && other.top < bottom && other.left > right && other.isPushable && x - other.x > -blowDistance)
+                if(other.top > top && other.top < bottom && other.left > left && other.isPushable && x - other.x > -blowDistance)
                 {
                     other.acceleration.SetXY(0.23f,other.acceleration.y);
                 }
@@ -109,6 +109,8 @@ public class Fan : AnimationSprite
     private void Wind()
     {
         wind.alpha = 0.7f;
+        if (alpha == 0)
+            wind.alpha = 0;
         if(active)
         {
             wind.SetCycle(0, 7, 5);

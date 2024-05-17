@@ -28,7 +28,7 @@ public class MyGame : Game
     public SoundChannel raiseSFX;
     public SoundChannel lowerSFX;
 
-    public MyGame() : base(1920, 1080, false, false)     // Create a window that's 800x600 and NOT fullscreen
+    public MyGame() : base(1920, 1080, true, false)     // Create a window that's 800x600 and NOT fullscreen
     {
         winScreen = new Sprite("winScreen.png");
         winScreen.SetOrigin(winScreen.width / 2 + 30, winScreen.height / 2 + 50);
@@ -37,7 +37,7 @@ public class MyGame : Game
         ambientSFX = new Sound("sfx/17.wav", true, true).Play();
         ambientSFX.IsPaused = true;
 
-        musicSFX = new Sound("sfx/27.wav", true, true).Play();
+        
 
 
         lowerSFX = new Sound("sfx/24.wav", true, true).Play();
@@ -174,14 +174,20 @@ public class MyGame : Game
     void LoadDemo()
     {
         currentLevel = 0;
-        
+        musicSFX = new Sound("sfx/27.wav", true).Play();
+        soundChannels.Add(musicSFX);
 
         bg = new Sprite("background.png");
         AddChild(bg);
         bg.SetOrigin(bg.width / 2, bg.height / 2);
         bg.scale = 1.2f;
         bg.SetXY(width / 2, height / 2);
-        
+
+        Sprite logo = new Sprite("logo.png");
+        AddChild(logo);
+        logo.SetOrigin(logo.width / 2, logo.height / 2);
+        logo.scale = 0.5f;
+        logo.SetXY(610, 220);
 
         playButton = new AnimationSprite("play.png", 2, 1);
         AddChild(playButton);
@@ -229,11 +235,13 @@ public class MyGame : Game
     {
 
         //                                                              ----------NECESSITIES----------
-
+        
         currentLevel = 1;
 
         //sounds
         ambientSFX.IsPaused = false;
+        musicSFX = new Sound("sfx/27.wav", true).Play();
+        soundChannels.Add(musicSFX);
 
         //background
         bg = new Sprite("background.png");
@@ -450,7 +458,9 @@ public class MyGame : Game
 
         //sounds
         ambientSFX.IsPaused = false;
-
+        musicSFX = new Sound("sfx/27.wav", true).Play();
+        
+        soundChannels.Add(musicSFX);
         //background
         bg = new Sprite("background.png");
         AddChild(bg);
@@ -623,9 +633,9 @@ public class MyGame : Game
         blank.AddChild(doorRed2);
         rigidBodies.Add(doorRed2);
 
-        Door doorPurple1 = new Door("colors/purpleDoorHor.png", 2, 1, new Vec2(11f * 60, 3.25f * 60), false, buttonPurple, new Vec2(9f * 60, 3.25f * 60));
+        Door doorPurple1 = new Door("colors/purpleDoorHor.png", 2, 1, new Vec2(11f * 60, 3.5f * 60), false, buttonPurple, new Vec2(9f * 60, 3.5f * 60));
         doorPurple1.scaleX = 0.3f;
-        blank.AddChild(doorPurple1);
+        AddChild(doorPurple1);
         rigidBodies.Add(doorPurple1);
 
         Door doorPurple2 = new Door("colors/purpleDoor.png", 1, 2, new Vec2(3.75f * 60, 5.5f * 60), false, buttonPurple, new Vec2(3.75f * 60, 9f * 60));
@@ -634,7 +644,7 @@ public class MyGame : Game
 
         Door doorWhite1 = new Door("colors/whiteDoorHor.png", 2, 1, new Vec2(11f * 60, 3.25f * 60), false, buttonWhite, new Vec2(13f * 60, 3.25f * 60));
         doorWhite1.scaleX = 0.3f;
-        blank.AddChild(doorWhite1);
+        AddChild(doorWhite1);
         rigidBodies.Add(doorWhite1);
 
         Door doorWhite2 = new Door("colors/whiteDoor.png", 1, 2, new Vec2(3.25f * 60, 5.5f * 60), false, buttonWhite, new Vec2(3.25f * 60, 9f * 60));
@@ -750,6 +760,8 @@ public class MyGame : Game
 
         //sounds
         ambientSFX.IsPaused = false;
+        musicSFX = new Sound("sfx/27.wav", true).Play();
+        soundChannels.Add(musicSFX);
 
         //background
         bg = new Sprite("background.png");
@@ -911,7 +923,7 @@ public class MyGame : Game
         blank.AddChild(doorBlue1);
         rigidBodies.Add(doorBlue1);
 
-        Door doorBlue2 = new Door("colors/blueDoorHor.png", 2, 1, new Vec2(11.5f * 60, 14f * 60), false, buttonBlue, new Vec2(14.5f * 60, 14f * 60));
+        Door doorBlue2 = new Door("colors/blueDoorHor.png", 2, 1, new Vec2(6.5f * 60, 14f * 60), false, buttonBlue, new Vec2(3.5f * 60, 14f * 60));
         blank.AddChild(doorBlue2);
         rigidBodies.Add(doorBlue2);
 
@@ -938,7 +950,7 @@ public class MyGame : Game
         box2.isPushable = true;
         box2.scale = 0.49f;
 
-        RigidBody box3 = new RigidBody("crate.png", 1, 1, new Vec2(11.5f * 60, 13f * 60), true);
+        RigidBody box3 = new RigidBody("crate.png", 1, 1, new Vec2(6.5f * 60, 13f * 60), true);
         AddChild(box3);
         rigidBodies.Add(box3);
         box3.isPushable = true;
@@ -968,7 +980,7 @@ public class MyGame : Game
 
         //                                                        ----------WATER AND WIN SCREEN----------
 
-        player = new Player("candle.png", 7, 7, new Vec2(2f * 60, 2.5f * 60), true);
+        player = new Player("candle.png", 7, 7, new Vec2(2f * 60, 2f * 60), true);
         AddChild(player);
         rigidBodies.Add(player);
 
@@ -1001,8 +1013,8 @@ public class MyGame : Game
             }
             movingDown = true;
             water.y += waterSpeed;
-            if (water.y > height)
-                water.y = height;
+            if (water.y > height -40)
+                water.y = height -40;
         }
         else if (Input.GetKey(Key.UP))
         {
@@ -1013,6 +1025,8 @@ public class MyGame : Game
             }
             movingUp = true;
             water.y -= waterSpeed;
+            if (water.y < 10)
+                water.y = 10;
         }
         else
         {

@@ -10,11 +10,14 @@ public class Player : RigidBody
     public bool deathPlayed = false;
     public bool reload = false;
     private bool turnedRight = true;
+    private bool inAir = false;
     private SoundChannel deathSFX;
     private SoundChannel airSFX;
     private SoundChannel walkingSFX = new Sound("sfx/18.wav", true, true).Play();
     private Sound walkSFX = new Sound("sfx/1.wav");
-    
+    private SoundChannel walkingSFX = new Sound("sfx/18.wav", true, true).Play();
+    private AnimationSprite impactPFX = new AnimationSprite("particles/impact.png", 3, 2, 6);
+    private SoundChannel airSFX;
     
     private float jumpForce = 12f;
 
@@ -26,7 +29,9 @@ public class Player : RigidBody
         walkingSFX.IsPaused = true;
         SetScaleXY(.75f, .75f);
         myGame.soundChannels.Add(airSFX);
-
+        
+        impactPFX.SetOrigin(60,60);
+        myGame.soundChannels.Add(walkingSFX);
     }
 
     public void Update()
@@ -37,8 +42,9 @@ public class Player : RigidBody
             myGame.winScreen.SetXY(x, y);
 
             base.Update();
-
-            inBell = false;
+        
+        
+        inBell = false;
             if (!reload && !won)
             {
                 if (myGame.winScreen.scale <= 35)
@@ -61,7 +67,7 @@ public class Player : RigidBody
 
             }
 
-            if (!deathPlayed && !won && levelStart)
+            if (!deathPlayed && !won && levelStart && myGame.player.scale < 1)
             {
                 if (Input.GetKey(Key.A) && Input.GetKey(Key.D))
                 {
@@ -104,8 +110,15 @@ public class Player : RigidBody
                     grounded = false;
                     isPushing = false;
                     walkSFX.Play();
+                    parent.AddChild(impactPFX);
+                    impactPFX.SetXY(position.x, position.y - 19);
+                    impactPFX.SetCycle(0, 5, 5);
                 }
+            
 
+            impactPFX.Animate();
+            if (impactPFX.currentFrame == 4)
+                impactPFX.SetCycle(5,1);
                 foreach (Sprite other in myGame.divingBells)
                 {
                     if (y > other.y - other.height / 2 && y < other.y + other.height / 2 &&
@@ -123,12 +136,12 @@ public class Player : RigidBody
                         }
                     }
                 }
-                if (y > myGame.water.y && !inBell) Death();
+                
             }
-
-            if (reload)
+        if (y > myGame.water.y && !inBell) Death();
+        if (reload)
             {
-                Console.WriteLine(myGame.winScreen.scale);
+                
 
                 if (myGame.winScreen.scale > 1f)
                     myGame.winScreen.scale -= 0.25f;
@@ -142,7 +155,7 @@ public class Player : RigidBody
 
             if (won)
             {
-                Console.WriteLine(myGame.winScreen.scale);
+                
                 if (myGame.winScreen.scale > 1f)
                     myGame.winScreen.scale -= 0.25f;
                 else
@@ -154,6 +167,13 @@ public class Player : RigidBody
             DirectionSetter(turnedRight);
             if (myGame.currentLevel != 0)
             Animation(walking, grounded, (isPushing || isWalling), deathPlayed);
+    }
+
+    public void LandParticle()
+    {
+        impactPFX.SetXY(position.x, position.y - 19);
+        impactPFX.SetCycle(0, 5, 5);
+        inAir = false;
     }
 
     public void Death()
@@ -199,6 +219,7 @@ public class Player : RigidBody
             else if (velocity.y > 1f)
             {
                 SetCycle(20, 3, 5);
+                inAir = true;
                 isPushing = false;
             }
         }
@@ -221,7 +242,8 @@ public class Player : RigidBody
 
         else
         {
-            //myGame.light.SetCycle(0, 5, 3);
+            if (inAir)
+                LandParticle();
             SetCycle(0, 6, 5);
         }
         Animate();
@@ -233,10 +255,12 @@ public class Player : RigidBody
         if(isTurnedRight)
         {
             Mirror(false, false);
+            impactPFX.Mirror(false, false);
         }
         else
         {
             Mirror(true, false);
+            impactPFX.Mirror(true, false);
         }
     }
 

@@ -10,6 +10,7 @@ public class Turtle : RigidBody
 {
     SoundChannel turtleSFX;
     AnimationSprite animation;
+    float tempX;
     public Turtle(string filename, int cols, int rows, Vec2 pos, bool moving, int frames = -1, bool keepInCache = false, bool addCollider = true) : base(filename, cols, rows, pos, moving, frames, keepInCache, addCollider)
     {
         isTurtle = true;
@@ -36,9 +37,22 @@ public class Turtle : RigidBody
             inWater = true;
             animation.Animate();
         }
-
+        
         if (inWater && y < myGame.water.y + 5) 
         {
+            if (position.x > tempX && velocity.x == 0)
+            {
+                Console.WriteLine("buh");
+                flipped = false;
+            }
+
+            if (position.x < tempX && velocity.x == 0)
+            {
+                Console.WriteLine("buh");
+                flipped = true;
+            }
+
+            tempX = position.x;
             turtleSFX.IsPaused = false;
             
             if (!flipped)
