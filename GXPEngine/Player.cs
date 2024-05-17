@@ -15,9 +15,9 @@ public class Player : RigidBody
     private SoundChannel airSFX;
     private SoundChannel walkingSFX = new Sound("sfx/18.wav", true, true).Play();
     private Sound walkSFX = new Sound("sfx/1.wav");
-    private SoundChannel walkingSFX = new Sound("sfx/18.wav", true, true).Play();
+    
     private AnimationSprite impactPFX = new AnimationSprite("particles/impact.png", 3, 2, 6);
-    private SoundChannel airSFX;
+    
     
     private float jumpForce = 12f;
 

@@ -28,7 +28,7 @@ public class MyGame : Game
     public SoundChannel raiseSFX;
     public SoundChannel lowerSFX;
 
-    public MyGame() : base(1920, 1080, true, false)     // Create a window that's 800x600 and NOT fullscreen
+    public MyGame() : base(1920, 1080, false, false)     // Create a window that's 800x600 and NOT fullscreen
     {
         winScreen = new Sprite("winScreen.png");
         winScreen.SetOrigin(winScreen.width / 2 + 30, winScreen.height / 2 + 50);
@@ -55,7 +55,7 @@ public class MyGame : Game
     void Update()
     {
         BackgroundUpdate();
-
+        Console.WriteLine(musicSFX.IsPaused);
         if (currentLevel != 0)
             WaterControls();
         else
@@ -174,8 +174,8 @@ public class MyGame : Game
     void LoadDemo()
     {
         currentLevel = 0;
-        musicSFX = new Sound("sfx/27.wav", true).Play();
-        soundChannels.Add(musicSFX);
+        musicSFX = new Sound("sfx/27.wav", true, true).Play();
+        
 
         bg = new Sprite("background.png");
         AddChild(bg);
@@ -240,8 +240,8 @@ public class MyGame : Game
 
         //sounds
         ambientSFX.IsPaused = false;
-        musicSFX = new Sound("sfx/27.wav", true).Play();
-        soundChannels.Add(musicSFX);
+        //musicSFX = new Sound("sfx/27.wav", true).Play();
+        //soundChannels.Add(musicSFX);
 
         //background
         bg = new Sprite("background.png");
@@ -458,9 +458,9 @@ public class MyGame : Game
 
         //sounds
         ambientSFX.IsPaused = false;
-        musicSFX = new Sound("sfx/27.wav", true).Play();
+        //musicSFX = new Sound("sfx/27.wav", true).Play();
         
-        soundChannels.Add(musicSFX);
+        //soundChannels.Add(musicSFX);
         //background
         bg = new Sprite("background.png");
         AddChild(bg);
